@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - 格變練習器 prototype</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'><link rel="stylesheet" href="./style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<userInput id="app">
+  <div class="top">
+    <div class="userInput">
+      <div class="status">{{status}}</div>
+      <input v-model="userInput" placeholder="可以輸入 mora 或 homo 試試"/>
+    </div>
+    <div class="info">
+      <div class="show">
+        <button>性別</button>
+        <div v-if="currentWord" class="text">{{currentWord.type}}</div>
+      </div>
+      <div class="show">
+        <button>變格</button>
+        <div v-if="currentWord" class="text">{{currentWord.declension}}</div>
+      </div>
+      <div class="show">
+        <button>詞幹</button>
+        <div v-if="currentWord" class="text">{{currentWord.stem}}</div>
+      </div>
+    </div>
+  </div>
+  <hr/>
+  <div class="bottom">
+    <div class="mainInput left">
+      <div class="name">Single</div>
+      <div class="row" v-for="(item,i) in caseList">
+        <label>{{item.cht}}</label>
+        <input type="text" v-model="inputData.singleInputs[i]" :key="i"/>
+        <div class="ansStatus">
+          <i v-if="inputData.singleInputs[i] === (ansData && ansData.singleInputs[i])" class="fas fa-check"></i>
+        </div>
+      </div>
+    </div>
+    <div class="mainInput right">
+      <div class="name">Plural</div>
+      <div class="row" v-for="(item,i) in caseList" :key="item.eng">
+        <label>{{item.cht}}</label>
+        <input type="text" v-model="inputData.pluralInputs[i]"/>
+        <div class="ansStatus">
+          <i v-if="inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])" class="fas fa-check"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</userInput>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
