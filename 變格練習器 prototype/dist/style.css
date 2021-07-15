@@ -1,0 +1,180 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #35598f;
+}
+
+* {
+  box-sizing: border-box;
+  position: relative;
+  font-family: "Noto Sans TC";
+}
+
+#app {
+  max-width: 750px;
+  min-width: 720px;
+  width: 80%;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: -8px 8px 3px 1px rgba(0, 0, 0, 0.3);
+}
+#app .top, #app .bottom {
+  border-radius: 10px;
+  border: 2px solid rgba(153, 153, 153, 0.8);
+  left: 50%;
+  transform: translateX(-50%);
+}
+#app .top {
+  font-size: 0;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(153, 153, 153, 0.5);
+}
+#app .top .userInput, #app .top .info {
+  font-size: 16px;
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+  width: 30%;
+}
+#app .top .userInput {
+  width: 65%;
+  border-right: 2px solid rgba(153, 153, 153, 0.3);
+  padding: 20px;
+}
+#app .top .userInput .status {
+  color: #999;
+  margin-bottom: 20px;
+}
+#app .top .userInput input {
+  padding: 10px;
+  width: 250px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+}
+#app .top .userInput input:focus {
+  outline: none;
+  border: 2px solid #35598f;
+}
+#app .top .userInput .link {
+  position: absolute;
+  bottom: 15%;
+  right: 18%;
+  width: 30px;
+  height: 30px;
+  border: 1px solid green;
+}
+#app .top .info {
+  padding: 5px 5px 0px 15px;
+}
+#app .top .info .show {
+  padding: 5px 5px;
+  margin-bottom: 10px;
+}
+#app .top .info button, #app .top .info .text {
+  vertical-align: middle;
+}
+#app .top .info button {
+  letter-spacing: 2px;
+  padding: 3px 9px;
+  border-radius: 4px;
+  color: white;
+  margin-right: 10px;
+  cursor: pointer;
+  border: none;
+  background-color: rgba(53, 89, 143, 0.9);
+  box-shadow: -2px 3px 3px 1px rgba(85, 85, 85, 0.4);
+  transition: 0.3s;
+}
+#app .top .info button:hover {
+  transform: translate(1px, -1px);
+  box-shadow: -4px 4px 3px 1px rgba(85, 85, 85, 0.4);
+}
+#app .top .info .text {
+  display: inline-block;
+  width: 70px;
+  height: 20px;
+  color: #888;
+}
+#app hr {
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  opacity: 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 80%;
+}
+#app .bottom {
+  font-size: 0;
+  width: 90%;
+}
+#app .bottom .mainInput {
+  padding-top: 10px;
+  display: inline-block;
+  height: 100%;
+  width: 50%;
+  font-size: 16px;
+}
+#app .bottom .mainInput .name {
+  color: #777;
+  font-weight: 700;
+  font-size: 12px;
+  position: absolute;
+  left: 8px;
+  top: 4px;
+}
+#app .bottom .mainInput.left {
+  border-right: 2px dashed rgba(136, 136, 136, 0.4);
+}
+#app .bottom .mainInput .row {
+  font-size: 16px;
+  padding: 3px 10px;
+  padding-left: 20px;
+  margin-top: 4px;
+}
+#app .bottom .mainInput .row * {
+  display: inline-block;
+  vertical-align: middle;
+}
+#app .bottom .mainInput .row .ansStatus {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-left: 25px;
+}
+#app .bottom .mainInput .row .ansStatus i {
+  font-size: 23px;
+}
+#app .bottom .mainInput .row .ansStatus i.fa-question {
+  color: #999;
+}
+#app .bottom .mainInput .row .ansStatus i.fa-check {
+  color: green;
+}
+#app .bottom .mainInput .row .ansStatus i.fa-times {
+  font-size: 26px;
+  color: red;
+}
+#app .bottom .mainInput .row label {
+  color: #888;
+  font-weight: 500;
+}
+#app .bottom .mainInput .row input {
+  margin: 10px;
+  width: 120px;
+  height: 25px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+#app .bottom .mainInput .row input:focus {
+  outline: none;
+  border: 2px solid #35598f;
+}
