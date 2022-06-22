@@ -1,3 +1,3 @@
 # Declension-Practice
 
-## This repo has been deprecated.
+This repo has been deprecated.
