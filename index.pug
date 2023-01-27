@@ -1,0 +1,42 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    title 變格練習器 prototype
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css')
+    link(rel='stylesheet', href='./style.css')
+    link(href='https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap', rel='stylesheet')
+  body
+    #app
+      .top
+        .userInput
+          .status {{ status }}
+          input(v-model='userInput', placeholder='可以輸入 mora 或 homo 試試')
+        .info
+          .show
+            button 性別測試
+            .text(v-if='currentWord') {{currentWord.type}}
+          .show
+            button 變格
+            .text(v-if='currentWord') {{currentWord.declension}}
+          .show
+            button 詞幹
+            .text(v-if='currentWord') {{currentWord.stem}}
+      hr
+      .bottom
+        .mainInput.left
+          .name Single
+          .row(v-for='(item,i) in caseList')
+            label {{item.cht}}
+            input(type='text', v-model='inputData.singleInputs[i]', :key='i')
+            .ansStatus
+              i(class='fas fa-check' v-if='inputData.singleInputs[i] === (ansData && ansData.singleInputs[i])')
+        .mainInput.right
+          .name Plural
+          .row(v-for='(item,i) in caseList', :key='item.eng')
+            label {{item.cht}}
+            input(type='text', v-model='inputData.pluralInputs[i]')
+            .ansStatus
+              i(class='fas fa-check' v-if='inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
+  script(type='module', src='./script.js')
