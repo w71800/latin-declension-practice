@@ -1,4 +1,4 @@
-console.clear()
+import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
 
 // 這邊是 sheet 的 ID
 var sheetID = "1wsjKUia5KvuUzFjs_97a5tir3583KZXDIuBGvmKYsZQ"
@@ -7,26 +7,28 @@ var sheetNum = 1
 const url = "https://spreadsheets.google.com/feeds/list/" + sheetID +"/" + sheetNum + "/public/values?alt=json";
 
 
-var vm = new Vue({
-  el: "#app",
-  data: {
-    caseList: [
-      {cht:"主格",eng:"NOM"},
-      {cht:"屬格",eng:"GEN"},
-      {cht:"與格",eng:"DAT"},
-      {cht:"受格",eng:"ACC"},
-      {cht:"奪格",eng:"ABL"},
-      {cht:"呼格",eng:"VOC"}
-    ],
-    words: [],
-    userInput: "",
-    currentWord: null,
-    status: "使用者尚未輸入...",
-    inputData: {
-      singleInputs: [],
-      pluralInputs: []
-    },
-    inputIsSelected: false,
+const app = createApp({
+  data() {
+    return {
+      test: "test",
+      caseList: [
+        {cht:"主格", eng:"NOM"},
+        {cht:"屬格", eng:"GEN"},
+        {cht:"與格", eng:"DAT"},
+        {cht:"受格", eng:"ACC"},
+        {cht:"奪格", eng:"ABL"},
+        {cht:"呼格", eng:"VOC"}
+      ],
+      words: [],
+      userInput: "",
+      currentWord: null,
+      status: "使用者尚未輸入...",
+      inputData: {
+        singleInputs: [],
+        pluralInputs: []
+      },
+      inputIsSelected: false,
+    }
   },
   watch: {
     userInput: function(newInput,oldInput){
@@ -90,19 +92,20 @@ var vm = new Vue({
           },
         }
         dataContainer.push(wordData)
-      })
+      }) 
       self.words = dataContainer
       },
     })
   },
 })
 
-
+app.mount("#app")
 
 $(".userInput > input").focus(()=>{
-  vm.inputIsSelected = true
+  app.inputIsSelected = true
 })
 $(".userInput > input").blur(()=>{
-  vm.status = "使用者未輸入..."
-  vm.inputIsSelected = false
+  app.status = "使用者未輸入..."
+  app.inputIsSelected = false
 })
+console.log("object");

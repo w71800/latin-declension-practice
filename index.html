@@ -9,10 +9,10 @@
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<userInput id="app">
+<div id="app">
   <div class="top">
     <div class="userInput">
-      <div class="status">{{status}}</div>
+      <div class="status">{{ status }}</div>
       <input v-model="userInput" placeholder="可以輸入 mora 或 homo 試試"/>
     </div>
     <div class="info">
@@ -53,10 +53,8 @@
       </div>
     </div>
   </div>
-</userInput>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script><script  src="./script.js"></script>
-
+</div>
 </body>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+<script type="module" src="./script.js"></script>
 </html>
