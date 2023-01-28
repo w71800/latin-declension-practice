@@ -1,11 +1,7 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+import url from "./env.js"
 
-// 這邊是 sheet 的 ID
-var sheetID = "1wsjKUia5KvuUzFjs_97a5tir3583KZXDIuBGvmKYsZQ"
-var sheetNum = 1
-// 這是 url 的格式
-const url = "https://spreadsheets.google.com/feeds/list/" + sheetID +"/" + sheetNum + "/public/values?alt=json";
-
+console.log(url);
 
 const app = createApp({
   data() {
@@ -60,43 +56,46 @@ const app = createApp({
       else return null
     }
   },
-  created: function(){
-    // Vue 物件生成時執行 ajax 取得字彙資料包並處理
-    const self = this;
-    $.ajax({
-    url: url,
-    success: function(evt){
-      let dataContainer = []
-      let rawData = evt.feed.entry
-      let dicUrl = "http://www.latin-dictionary.net/search/latin/"
-      rawData.forEach((item)=>{
-      let wordData = {
-          stem: item.gsx$詞幹.$t,
-          type: item.gsx$性別.$t,
-          declension: item.gsx$變格.$t,
-          single: {
-            NOM: item.gsx$nomsg.$t,
-            GEN: item.gsx$gensg.$t,
-            DAT: item.gsx$datsg.$t,
-            ACC: item.gsx$accsg.$t,
-            ABL: item.gsx$ablsg.$t,
-            VOC: item.gsx$vocsg.$t,
-          },
-          plural: {
-            NOM: item.gsx$nompl.$t,
-            GEN: item.gsx$genpl.$t,
-            DAT: item.gsx$datpl.$t,
-            ACC: item.gsx$accpl.$t,
-            ABL: item.gsx$ablpl.$t,
-            VOC: item.gsx$vocpl.$t,
-          },
-        }
-        dataContainer.push(wordData)
-      }) 
-      self.words = dataContainer
-      },
-    })
-  },
+  // created: function(){
+  //   // Vue 物件生成時執行 ajax 取得字彙資料包並處理
+  //   const self = this;
+  //   $.ajax({
+  //   url,
+  //   success: function(evt){
+  //     let dataContainer = []
+  //     let rawData = evt.feed.entry
+  //     let dicUrl = "http://www.latin-dictionary.net/search/latin/"
+  //     rawData.forEach((item)=>{
+  //     let wordData = {
+  //         stem: item.gsx$詞幹.$t,
+  //         type: item.gsx$性別.$t,
+  //         declension: item.gsx$變格.$t,
+  //         single: {
+  //           NOM: item.gsx$nomsg.$t,
+  //           GEN: item.gsx$gensg.$t,
+  //           DAT: item.gsx$datsg.$t,
+  //           ACC: item.gsx$accsg.$t,
+  //           ABL: item.gsx$ablsg.$t,
+  //           VOC: item.gsx$vocsg.$t,
+  //         },
+  //         plural: {
+  //           NOM: item.gsx$nompl.$t,
+  //           GEN: item.gsx$genpl.$t,
+  //           DAT: item.gsx$datpl.$t,
+  //           ACC: item.gsx$accpl.$t,
+  //           ABL: item.gsx$ablpl.$t,
+  //           VOC: item.gsx$vocpl.$t,
+  //         },
+  //       }
+  //       dataContainer.push(wordData)
+  //     }) 
+  //     self.words = dataContainer
+  //     },
+  //   })
+  // },
+  mounted(){
+    console.log("mounted");
+  }
 })
 
 app.mount("#app")
@@ -108,4 +107,3 @@ $(".userInput > input").blur(()=>{
   app.status = "使用者未輸入..."
   app.inputIsSelected = false
 })
-console.log("object");
