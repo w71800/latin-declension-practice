@@ -1,6 +1,11 @@
-html, body {
-  padding: 0;
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+html, body {
   height: 100%;
   width: 100%;
   display: flex;
@@ -10,12 +15,10 @@ html, body {
 }
 
 * {
-  box-sizing: border-box;
-  position: relative;
   font-family: "Noto Sans TC";
 }
 
-#app {
+.container {
   max-width: 750px;
   min-width: 720px;
   width: 80%;
@@ -24,35 +27,66 @@ html, body {
   border-radius: 10px;
   box-shadow: -8px 8px 3px 1px rgba(0, 0, 0, 0.3);
 }
-#app .top {
+
+#mode_btns {
+  position: absolute;
+  right: 0px;
+  top: 20px;
+  transform: translateX(120%);
+}
+
+.btn {
+  border: 1px solid #fff;
+  color: #fff;
+  background-color: #35598f;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn:hover {
+  border: 1px solid #fff;
+  color: #35598f;
+  background-color: #fff;
+}
+.btn:last-child {
+  margin-top: 15px;
+}
+.btn.is_highlight {
+  border: 1px solid #fff;
+  color: #35598f;
+  background-color: #fff;
+}
+
+.container .top {
   font-size: 0;
   width: 90%;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2px solid rgba(153, 153, 153, 0.5);
+  padding-left: 20px;
 }
-#app .top .userInput {
+.container .top .userInput {
   width: 65%;
   border-right: 2px solid rgba(153, 153, 153, 0.3);
   padding: 20px;
 }
-#app .top .userInput .status {
+.container .top .userInput .status {
   color: #999;
   margin-bottom: 20px;
 }
-#app .top .userInput input {
+.container .top .userInput input {
   padding: 10px;
   width: 250px;
   height: 30px;
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 3px;
 }
-#app .top .userInput input:focus {
+.container .top .userInput input:focus {
   outline: none;
   border: 2px solid #35598f;
 }
-#app .top .userInput .link {
+.container .top .userInput .link {
   position: absolute;
   bottom: 15%;
   right: 18%;
@@ -60,14 +94,15 @@ html, body {
   height: 30px;
   border: 1px solid green;
 }
-#app .top .info {
+.container .top .info {
   padding: 5px 5px 0px 15px;
+  width: 35%;
 }
-#app .top .info .show {
+.container .top .info .show {
   padding: 5px 5px;
   margin-bottom: 10px;
 }
-#app .top .info button {
+.container .top .info button {
   font-size: 14px;
   letter-spacing: 2px;
   padding: 3px 9px;
@@ -80,35 +115,35 @@ html, body {
   box-shadow: -2px 3px 3px 1px rgba(85, 85, 85, 0.4);
   transition: 0.3s;
 }
-#app .top .info button:hover {
+.container .top .info button:hover {
   transform: translate(1px, -1px);
   box-shadow: -4px 4px 3px 1px rgba(85, 85, 85, 0.4);
 }
-#app .top .info .text {
+.container .top .info .text {
   display: inline-block;
   width: 70px;
   height: 20px;
   color: #888;
 }
-#app hr {
+.container hr {
   border: 1px solid rgba(153, 153, 153, 0.4);
   opacity: 0;
   margin-top: 15px;
   margin-bottom: 15px;
   width: 80%;
 }
-#app .bottom {
+.container .bottom {
   font-size: 0;
   width: 90%;
 }
-#app .bottom .mainInput {
+.container .bottom .mainInput {
   padding-top: 10px;
   display: inline-block;
   height: 100%;
   width: 50%;
   font-size: 16px;
 }
-#app .bottom .mainInput .name {
+.container .bottom .mainInput .name {
   color: #777;
   font-weight: 700;
   font-size: 12px;
@@ -116,68 +151,68 @@ html, body {
   left: 8px;
   top: 4px;
 }
-#app .bottom .mainInput.left {
+.container .bottom .mainInput.left {
   border-right: 2px dashed rgba(136, 136, 136, 0.4);
 }
-#app .bottom .mainInput .row {
+.container .bottom .mainInput .row {
   font-size: 16px;
   padding: 3px 10px;
   padding-left: 20px;
   margin-top: 4px;
 }
-#app .bottom .mainInput .row * {
+.container .bottom .mainInput .row * {
   display: inline-block;
   vertical-align: middle;
 }
-#app .bottom .mainInput .row .ansStatus {
+.container .bottom .mainInput .row .ansStatus {
   border-radius: 50%;
   width: 30px;
   height: 30px;
   margin-left: 25px;
 }
-#app .bottom .mainInput .row .ansStatus i {
+.container .bottom .mainInput .row .ansStatus i {
   font-size: 23px;
 }
-#app .bottom .mainInput .row .ansStatus i.fa-question {
+.container .bottom .mainInput .row .ansStatus i.fa-question {
   color: #999;
 }
-#app .bottom .mainInput .row .ansStatus i.fa-check {
+.container .bottom .mainInput .row .ansStatus i.fa-check {
   color: green;
 }
-#app .bottom .mainInput .row .ansStatus i.fa-times {
+.container .bottom .mainInput .row .ansStatus i.fa-times {
   font-size: 26px;
   color: red;
 }
-#app .bottom .mainInput .row label {
+.container .bottom .mainInput .row label {
   color: #888;
   font-weight: 500;
 }
-#app .bottom .mainInput .row input {
+.container .bottom .mainInput .row input {
   margin: 10px;
   width: 120px;
   height: 25px;
   border-radius: 3px;
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
-#app .bottom .mainInput .row input:focus {
+.container .bottom .mainInput .row input:focus {
   outline: none;
   border: 2px solid #35598f;
 }
 
-#app .top, #app .bottom {
+.container .top, .container .bottom {
   border-radius: 10px;
   border: 2px solid rgba(153, 153, 153, 0.8);
   left: 50%;
   transform: translateX(-50%);
 }
 
-#app .top .userInput, #app .top .info {
+.container .top .userInput, .container .top .info {
   font-size: 16px;
   display: inline-block;
   vertical-align: top;
   height: 100%;
 }
 
-#app .top .info button, #app .top .info .text {
+.container .top .info button, .container .top .info .text {
   vertical-align: middle;
 }

@@ -8,35 +8,47 @@ html(lang='en')
     link(href='https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap', rel='stylesheet')
   body
     #app
-      .top
-        .userInput
-          .status {{ status }}
-          input(v-model='userInput', placeholder='可以輸入 mora 或 homo 試試')
-        .info
-          .show
-            button 性別
-            .text(v-if='currentWord') {{currentWord.type}}
-          .show
-            button 變格
-            .text(v-if='currentWord') {{currentWord.declension}}
-          .show
-            button 詞幹
-            .text(v-if='currentWord') {{currentWord.stem}}
-      hr
-      .bottom
-        .mainInput.left
-          .name Single
-          .row(v-for='(item,i) in caseList')
-            label {{item.cht}}
-            input(type='text', v-model='inputData.singleInputs[i]', :key='i')
-            .ansStatus
-              i(class='fas fa-check' v-if='inputData.singleInputs[i] === (ansData && ansData.singleInputs[i])')
-        .mainInput.right
-          .name Plural
-          .row(v-for='(item,i) in caseList', :key='item.eng')
-            label {{item.cht}}
-            input(type='text', v-model='inputData.pluralInputs[i]')
-            .ansStatus
-              i(class='fas fa-check' v-if='inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])')
+      .container
+        #mode_btns
+          .btn.mode_test(
+            @click="toggleMode('upload')"
+            :class="{is_highlight: mode == 'test'? true : false}"
+            ) 測驗模式
+          .btn.mode_upload(
+            @click="toggleMode('test')"
+            :class="{is_highlight: mode == 'upload'? true : false}"
+            ) 上傳模式
+        #mode_test(v-if='mode == "test"? true : false')
+          .top
+            .userInput
+              .status {{ status }}
+              input(v-model='userInput', placeholder='可以輸入 mora 或 homo 試試')
+            .info
+              .show
+                button 性別
+                .text(v-if='currentWord') {{currentWord.type}}
+              .show
+                button 變格
+                .text(v-if='currentWord') {{currentWord.declension}}
+              .show
+                button 詞幹
+                .text(v-if='currentWord') {{currentWord.stem}}
+          hr
+          .bottom
+            .mainInput.left
+              .name Single
+              .row(v-for='(item,i) in caseList')
+                label {{item.cht}}
+                input(type='text', v-model='inputData.singleInputs[i]', :key='i')
+                .ansStatus
+                  i(class='fas fa-check' v-if='inputData.singleInputs[i] === (ansData && ansData.singleInputs[i])')
+            .mainInput.right
+              .name Plural
+              .row(v-for='(item,i) in caseList', :key='item.eng')
+                label {{item.cht}}
+                input(type='text', v-model='inputData.pluralInputs[i]')
+                .ansStatus
+                  i(class='fas fa-check' v-if='inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])')
+        #mode_upload
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(type='module', src='./script.js')

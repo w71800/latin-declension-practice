@@ -28,6 +28,7 @@ const app = createApp({
         pluralInputs: []
       },
       inputIsSelected: false,
+      mode: "test"
     }
   },
   watch: {
@@ -44,6 +45,16 @@ const app = createApp({
       }
     },
   },
+  methods: {
+    toggleMode(now){
+      if(now == "test"){
+        this.mode = "upload"
+      }else{
+        this.mode = "test"
+      }
+      console.log(`模式已被更改為：${this.mode}`);
+    },
+  },
   computed: {
     // 從抓到的 currentWord 中複製對應的答案進去 ansData（單數與複數得答案所構成的 Array）
     ansData: function(){
@@ -58,7 +69,9 @@ const app = createApp({
         return ansTemp
       }
       else return null
-    }
+    },
+    // nowMode(){
+    // }
   },
   created: function(){
     // Vue 物件生成時執行 ajax 取得字彙資料包並處理
