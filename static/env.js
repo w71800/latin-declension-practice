@@ -4,4 +4,4 @@ var sheetNum = 1
 const url = `https://spreadsheets.google.com/feeds/list/${sheetID}/${sheetNum}/public/values?alt=json`
 
 
-export default url
+export { url } 

@@ -1,12 +1,13 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
-import url from "./env.js"
+import { url } from "./static/env.js"
+import words from './static/words.js';
 
-console.log(url);
+console.log(words);
 
 const app = createApp({
   data() {
     return {
-      test: "test",
+      // 格位名稱列表
       caseList: [
         {cht:"主格", eng:"NOM"},
         {cht:"屬格", eng:"GEN"},
@@ -15,8 +16,11 @@ const app = createApp({
         {cht:"奪格", eng:"ABL"},
         {cht:"呼格", eng:"VOC"}
       ],
-      words: [],
+      // 從資料庫抓到的詞彙資料
+      words,
+      // 使用者的當下輸入
       userInput: "",
+      // 當下要測試的字
       currentWord: null,
       status: "使用者尚未輸入...",
       inputData: {
@@ -56,46 +60,44 @@ const app = createApp({
       else return null
     }
   },
-  // created: function(){
-  //   // Vue 物件生成時執行 ajax 取得字彙資料包並處理
-  //   const self = this;
-  //   $.ajax({
-  //   url,
-  //   success: function(evt){
-  //     let dataContainer = []
-  //     let rawData = evt.feed.entry
-  //     let dicUrl = "http://www.latin-dictionary.net/search/latin/"
-  //     rawData.forEach((item)=>{
-  //     let wordData = {
-  //         stem: item.gsx$詞幹.$t,
-  //         type: item.gsx$性別.$t,
-  //         declension: item.gsx$變格.$t,
-  //         single: {
-  //           NOM: item.gsx$nomsg.$t,
-  //           GEN: item.gsx$gensg.$t,
-  //           DAT: item.gsx$datsg.$t,
-  //           ACC: item.gsx$accsg.$t,
-  //           ABL: item.gsx$ablsg.$t,
-  //           VOC: item.gsx$vocsg.$t,
-  //         },
-  //         plural: {
-  //           NOM: item.gsx$nompl.$t,
-  //           GEN: item.gsx$genpl.$t,
-  //           DAT: item.gsx$datpl.$t,
-  //           ACC: item.gsx$accpl.$t,
-  //           ABL: item.gsx$ablpl.$t,
-  //           VOC: item.gsx$vocpl.$t,
-  //         },
-  //       }
-  //       dataContainer.push(wordData)
-  //     }) 
-  //     self.words = dataContainer
-  //     },
-  //   })
-  // },
-  mounted(){
-    console.log("mounted");
-  }
+  created: function(){
+    // Vue 物件生成時執行 ajax 取得字彙資料包並處理
+    this.words = words
+    // const self = this;
+    // $.ajax({
+    // url,
+    // success: function(evt){
+    //   let dataContainer = []
+    //   let rawData = evt.feed.entry
+    //   let dicUrl = "http://www.latin-dictionary.net/search/latin/"
+    //   rawData.forEach((item)=>{
+    //   let wordData = {
+    //       stem: item.gsx$詞幹.$t,
+    //       type: item.gsx$性別.$t,
+    //       declension: item.gsx$變格.$t,
+    //       single: {
+    //         NOM: item.gsx$nomsg.$t,
+    //         GEN: item.gsx$gensg.$t,
+    //         DAT: item.gsx$datsg.$t,
+    //         ACC: item.gsx$accsg.$t,
+    //         ABL: item.gsx$ablsg.$t,
+    //         VOC: item.gsx$vocsg.$t,
+    //       },
+    //       plural: {
+    //         NOM: item.gsx$nompl.$t,
+    //         GEN: item.gsx$genpl.$t,
+    //         DAT: item.gsx$datpl.$t,
+    //         ACC: item.gsx$accpl.$t,
+    //         ABL: item.gsx$ablpl.$t,
+    //         VOC: item.gsx$vocpl.$t,
+    //       },
+    //     }
+    //     dataContainer.push(wordData)
+    //   }) 
+    //   self.words = dataContainer
+    //   },
+    // })
+  },
 })
 
 app.mount("#app")
