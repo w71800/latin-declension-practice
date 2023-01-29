@@ -1,0 +1,43 @@
+@import './_source'
+  
+#mode_test
+  .top
+    .userInput
+      input  
+        width: 250px 
+        height: 30px 
+        border: 1px solid rgba(0, 0, 0, 0.5) 
+        border-radius: 3px 
+        &:focus 
+          outline: none 
+          border: 2px solid $color_blue
+    .status 
+      margin-bottom: 20px
+    .link 
+      position: absolute 
+      bottom: 15% 
+      right: 18% 
+      width: 30px 
+      height: 30px 
+      border: 1px solid green 
+    .info
+      .text 
+        display: inline-block 
+        width: 70px 
+        height: 20px 
+        color: #888 
+  .bottom
+    .ansStatus
+      border-radius: 50% 
+      width: 30px 
+      height: 30px 
+      margin-left: 25px 
+      i 
+        font-size: 23px 
+        &.fa-question 
+          color: #999 
+        &.fa-check 
+          color: green 
+        &.fa-times 
+          font-size: 26px 
+          color: red 

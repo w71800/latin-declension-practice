@@ -70,14 +70,10 @@ html(lang='en')
               .row(v-for='(item,i) in caseList')
                 label {{item.cht}}
                 input(type='text', v-model='inputData.singleInputs[i]', :key='i')
-                .ansStatus
-                  i(class='fas fa-check' v-if='inputData.singleInputs[i] === (ansData && ansData.singleInputs[i])')
             .mainInput.right
               .name Plural
               .row(v-for='(item,i) in caseList', :key='item.eng')
                 label {{item.cht}}
                 input(type='text', v-model='inputData.pluralInputs[i]')
-                .ansStatus
-                  i(class='fas fa-check' v-if='inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(type='module', src='./script.js')

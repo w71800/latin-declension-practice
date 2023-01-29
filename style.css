@@ -6,11 +6,59 @@
   width: 100px;
 }
 
+#mode_test .top .userInput input {
+  width: 250px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+}
+#mode_test .top .userInput input:focus {
+  outline: none;
+  border: 2px solid #35598f;
+}
+#mode_test .top .status {
+  margin-bottom: 20px;
+}
+#mode_test .top .link {
+  position: absolute;
+  bottom: 15%;
+  right: 18%;
+  width: 30px;
+  height: 30px;
+  border: 1px solid green;
+}
+#mode_test .top .info .text {
+  display: inline-block;
+  width: 70px;
+  height: 20px;
+  color: #888;
+}
+#mode_test .bottom .ansStatus {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-left: 25px;
+}
+#mode_test .bottom .ansStatus i {
+  font-size: 23px;
+}
+#mode_test .bottom .ansStatus i.fa-question {
+  color: #999;
+}
+#mode_test .bottom .ansStatus i.fa-check {
+  color: green;
+}
+#mode_test .bottom .ansStatus i.fa-times {
+  font-size: 26px;
+  color: red;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   position: relative;
+  font-family: "Noto Sans TC";
 }
 
 html, body {
@@ -18,15 +66,15 @@ html, body {
   width: 100%;
 }
 
+#app .test {
+  color: green;
+}
+
 html, body {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #35598f;
-}
-
-* {
-  font-family: "Noto Sans TC";
 }
 
 .container {
@@ -68,7 +116,7 @@ html, body {
   background-color: #fff;
 }
 
-.container .top {
+#mode_test .top, #mode_upload .top {
   font-size: 0;
   width: 90%;
   display: flex;
@@ -77,43 +125,23 @@ html, body {
   border: 2px solid rgba(153, 153, 153, 0.5);
   padding-left: 20px;
 }
-.container .top .userInput {
+#mode_test .top .userInput, #mode_upload .top .userInput {
   width: 65%;
   border-right: 2px solid rgba(153, 153, 153, 0.3);
   padding: 20px;
 }
-.container .top .userInput .status {
+#mode_test .top .userInput .status, #mode_upload .top .userInput .status {
   color: #999;
-  margin-bottom: 20px;
 }
-.container .top .userInput input {
-  padding: 10px;
-  width: 250px;
-  height: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 3px;
-}
-.container .top .userInput input:focus {
-  outline: none;
-  border: 2px solid #35598f;
-}
-.container .top .userInput .link {
-  position: absolute;
-  bottom: 15%;
-  right: 18%;
-  width: 30px;
-  height: 30px;
-  border: 1px solid green;
-}
-.container .top .info {
+#mode_test .top .info, #mode_upload .top .info {
   padding: 5px 5px 0px 15px;
   width: 35%;
 }
-.container .top .info .show {
+#mode_test .top .info .show, #mode_upload .top .info .show {
   padding: 5px 5px;
   margin-bottom: 10px;
 }
-.container .top .info button {
+#mode_test .top .info button, #mode_upload .top .info button {
   font-size: 14px;
   letter-spacing: 2px;
   padding: 3px 9px;
@@ -124,37 +152,26 @@ html, body {
   border: none;
   background-color: rgba(53, 89, 143, 0.9);
   box-shadow: -2px 3px 3px 1px rgba(85, 85, 85, 0.4);
-  transition: 0.3s;
 }
-.container .top .info button:hover {
-  transform: translate(1px, -1px);
-  box-shadow: -4px 4px 3px 1px rgba(85, 85, 85, 0.4);
-}
-.container .top .info .text {
-  display: inline-block;
-  width: 70px;
-  height: 20px;
-  color: #888;
-}
-.container hr {
+#mode_test hr, #mode_upload hr {
   border: 1px solid rgba(153, 153, 153, 0.4);
   opacity: 0;
   margin-top: 15px;
   margin-bottom: 15px;
   width: 80%;
 }
-.container .bottom {
+#mode_test .bottom, #mode_upload .bottom {
   font-size: 0;
   width: 90%;
 }
-.container .bottom .mainInput {
+#mode_test .bottom .mainInput, #mode_upload .bottom .mainInput {
   padding-top: 10px;
   display: inline-block;
   height: 100%;
   width: 50%;
   font-size: 16px;
 }
-.container .bottom .mainInput .name {
+#mode_test .bottom .mainInput .name, #mode_upload .bottom .mainInput .name {
   color: #777;
   font-weight: 700;
   font-size: 12px;
@@ -162,50 +179,31 @@ html, body {
   left: 8px;
   top: 4px;
 }
-.container .bottom .mainInput.left {
+#mode_test .bottom .mainInput.left, #mode_upload .bottom .mainInput.left {
   border-right: 2px dashed rgba(136, 136, 136, 0.4);
 }
-.container .bottom .mainInput .row {
+#mode_test .bottom .mainInput .row, #mode_upload .bottom .mainInput .row {
   font-size: 16px;
   padding: 3px 10px;
   padding-left: 20px;
   margin-top: 4px;
 }
-.container .bottom .mainInput .row * {
+#mode_test .bottom .mainInput .row *, #mode_upload .bottom .mainInput .row * {
   display: inline-block;
   vertical-align: middle;
 }
-.container .bottom .mainInput .row .ansStatus {
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  margin-left: 25px;
-}
-.container .bottom .mainInput .row .ansStatus i {
-  font-size: 23px;
-}
-.container .bottom .mainInput .row .ansStatus i.fa-question {
-  color: #999;
-}
-.container .bottom .mainInput .row .ansStatus i.fa-check {
-  color: green;
-}
-.container .bottom .mainInput .row .ansStatus i.fa-times {
-  font-size: 26px;
-  color: red;
-}
-.container .bottom .mainInput .row label {
+#mode_test .bottom .mainInput .row label, #mode_upload .bottom .mainInput .row label {
   color: #888;
   font-weight: 500;
 }
-.container .bottom .mainInput .row input {
+#mode_test .bottom .mainInput .row input, #mode_upload .bottom .mainInput .row input {
   margin: 10px;
   width: 120px;
   height: 25px;
   border-radius: 3px;
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
-.container .bottom .mainInput .row input:focus {
+#mode_test .bottom .mainInput .row input:focus, #mode_upload .bottom .mainInput .row input:focus {
   outline: none;
   border: 2px solid #35598f;
 }
@@ -226,12 +224,4 @@ html, body {
 
 .container .top .info button, .container .top .info .text {
   vertical-align: middle;
-}
-
-#mode_upload .info button, #mode_upload .info input {
-  display: inline-block;
-  vertical-align: middle;
-}
-#mode_upload .info input {
-  width: 100px;
 }
