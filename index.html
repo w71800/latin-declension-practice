@@ -63,15 +63,27 @@
             <div class="info">
               <div class="show">
                 <button>性別</button>
-                <input>
+                <select name="type"> 
+                  <option value="" selected disabled>選擇性別</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Neuter">Neuter</option>
+                </select>
               </div>
               <div class="show">
                 <button>變格</button>
-                <input>
+                <select name="delension"> 
+                  <option value="" selected disabled>選擇變格</option>
+                  <option value="1st">1st</option>
+                  <option value="2nd">2nd</option>
+                  <option value="3rd">3rd</option>
+                  <option value="4th">4th</option>
+                  <option value="5th">5th</option>
+                </select>
               </div>
               <div class="show">
                 <button>詞幹</button>
-                <input>
+                <input placeholder="輸入詞幹">
               </div>
             </div>
           </div>
@@ -91,6 +103,7 @@
                 <input type="text" v-model="inputData.pluralInputs[i]">
               </div>
             </div>
+            <button id="submit">新增</button>
           </div>
         </div>
       </div>

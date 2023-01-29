@@ -1,9 +1,32 @@
-#mode_upload .info button, #mode_upload .info input {
+#mode_upload .info button, #mode_upload .info input, #mode_upload .info select {
   display: inline-block;
   vertical-align: middle;
 }
-#mode_upload .info input {
+#mode_upload .info input, #mode_upload .info select {
   width: 100px;
+  border-radius: 4px;
+  color: #888;
+  border: 1px solid #888;
+  padding: 3px 5px;
+}
+.bottom button#submit {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  border: none;
+  width: 40px;
+  height: 25px;
+  appearance: none;
+  background-color: #e15454;
+  color: #fff;
+  font-weight: 300;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: -2px 3px 3px 1px rgba(85, 85, 85, 0.4);
+}
+.bottom button#submit:hover {
+  box-shadow: -4px 4px 3px 1px rgba(85, 85, 85, 0.4);
+  transform: translate(1px, -1px);
 }
 
 #mode_test .top .userInput input {
@@ -11,10 +34,6 @@
   height: 30px;
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 3px;
-}
-#mode_test .top .userInput input:focus {
-  outline: none;
-  border: 2px solid #35598f;
 }
 #mode_test .top .status {
   margin-bottom: 20px;
@@ -53,12 +72,18 @@
   color: red;
 }
 
+#mode_test .top .userInput .input:focus {
+  outline: none;
+  border: 2px solid #35598f;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   position: relative;
   font-family: "Noto Sans TC";
+  appearance: none;
 }
 
 html, body {
@@ -116,6 +141,12 @@ html, body {
   background-color: #fff;
 }
 
+#mode_test .top, #mode_test .bottom, #mode_upload .top, #mode_upload .bottom {
+  border-radius: 10px;
+  border: 2px solid rgba(153, 153, 153, 0.8);
+  left: 50%;
+  transform: translateX(-50%);
+}
 #mode_test .top, #mode_upload .top {
   font-size: 0;
   width: 90%;
@@ -125,6 +156,12 @@ html, body {
   border: 2px solid rgba(153, 153, 153, 0.5);
   padding-left: 20px;
 }
+#mode_test .top .userInput, #mode_test .top .info, #mode_upload .top .userInput, #mode_upload .top .info {
+  font-size: 16px;
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+}
 #mode_test .top .userInput, #mode_upload .top .userInput {
   width: 65%;
   border-right: 2px solid rgba(153, 153, 153, 0.3);
@@ -133,9 +170,15 @@ html, body {
 #mode_test .top .userInput .status, #mode_upload .top .userInput .status {
   color: #999;
 }
+#mode_test .top .userInput input, #mode_upload .top .userInput input {
+  padding: 3px 5px;
+}
 #mode_test .top .info, #mode_upload .top .info {
   padding: 5px 5px 0px 15px;
   width: 35%;
+}
+#mode_test .top .info button, #mode_test .top .info .text, #mode_upload .top .info button, #mode_upload .top .info .text {
+  vertical-align: middle;
 }
 #mode_test .top .info .show, #mode_upload .top .info .show {
   padding: 5px 5px;
@@ -148,9 +191,8 @@ html, body {
   border-radius: 4px;
   color: white;
   margin-right: 10px;
-  cursor: pointer;
   border: none;
-  background-color: rgba(53, 89, 143, 0.9);
+  background-color: #35598f;
   box-shadow: -2px 3px 3px 1px rgba(85, 85, 85, 0.4);
 }
 #mode_test hr, #mode_upload hr {
@@ -160,6 +202,7 @@ html, body {
   margin-bottom: 15px;
   width: 80%;
 }
+
 #mode_test .bottom, #mode_upload .bottom {
   font-size: 0;
   width: 90%;
@@ -202,26 +245,10 @@ html, body {
   height: 25px;
   border-radius: 3px;
   border: 1px solid rgba(0, 0, 0, 0.5);
+  padding: 3px 5px;
 }
-#mode_test .bottom .mainInput .row input:focus, #mode_upload .bottom .mainInput .row input:focus {
+
+.bottom .mainInput .row input:focus {
   outline: none;
   border: 2px solid #35598f;
-}
-
-.container .top, .container .bottom {
-  border-radius: 10px;
-  border: 2px solid rgba(153, 153, 153, 0.8);
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.container .top .userInput, .container .top .info {
-  font-size: 16px;
-  display: inline-block;
-  vertical-align: top;
-  height: 100%;
-}
-
-.container .top .info button, .container .top .info .text {
-  vertical-align: middle;
 }

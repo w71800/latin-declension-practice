@@ -1,3 +1,12 @@
 $color_blue: #35598f
-$color_red: #8f3735
+$color_red: #e15454
 $color_white: #fff
+@mixin center()
+  display: flex
+  justify-content: center
+  align-items: center
+@mixin size($w, $h:$w)
+  width: $w
+  height: $h
+@mixin shadow($x: -2px, $y: 3px)
+  box-shadow: $x $y 3px 1px rgba(85, 85, 85, 0.4) 
