@@ -23,12 +23,13 @@ const app = createApp({
       // 當下要測試的字
       currentWord: null,
       status: "使用者尚未輸入...",
+      statusUpload: "尚未輸入",
       inputData: {
         singleInputs: [],
         pluralInputs: []
       },
       inputIsSelected: false,
-      mode: "test"
+      mode: "upload"
     }
   },
   watch: {

@@ -49,6 +49,35 @@ html(lang='en')
                 input(type='text', v-model='inputData.pluralInputs[i]')
                 .ansStatus
                   i(class='fas fa-check' v-if='inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])')
-        #mode_upload
+        #mode_upload(v-if='mode == "upload"? true : false')
+          .top
+            .userInput
+              .status {{ statusUpload }}
+            .info
+              .show
+                button 性別
+                input
+              .show
+                button 變格
+                input
+              .show
+                button 詞幹
+                input
+          hr
+          .bottom
+            .mainInput.left
+              .name Single
+              .row(v-for='(item,i) in caseList')
+                label {{item.cht}}
+                input(type='text', v-model='inputData.singleInputs[i]', :key='i')
+                .ansStatus
+                  i(class='fas fa-check' v-if='inputData.singleInputs[i] === (ansData && ansData.singleInputs[i])')
+            .mainInput.right
+              .name Plural
+              .row(v-for='(item,i) in caseList', :key='item.eng')
+                label {{item.cht}}
+                input(type='text', v-model='inputData.pluralInputs[i]')
+                .ansStatus
+                  i(class='fas fa-check' v-if='inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(type='module', src='./script.js')

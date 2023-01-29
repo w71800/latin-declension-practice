@@ -55,7 +55,46 @@
             </div>
           </div>
         </div>
-        <div id="mode_upload"></div>
+        <div id="mode_upload" v-if="mode == &quot;upload&quot;? true : false">
+          <div class="top">
+            <div class="userInput">
+              <div class="status">{{ statusUpload }}</div>
+            </div>
+            <div class="info">
+              <div class="show">
+                <button>性別</button>
+                <input>
+              </div>
+              <div class="show">
+                <button>變格</button>
+                <input>
+              </div>
+              <div class="show">
+                <button>詞幹</button>
+                <input>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="bottom">
+            <div class="mainInput left">
+              <div class="name">Single</div>
+              <div class="row" v-for="(item,i) in caseList">
+                <label>{{item.cht}}</label>
+                <input type="text" v-model="inputData.singleInputs[i]" :key="i">
+                <div class="ansStatus"><i class="fas fa-check" v-if="inputData.singleInputs[i] === (ansData &amp;&amp; ansData.singleInputs[i])"></i></div>
+              </div>
+            </div>
+            <div class="mainInput right">
+              <div class="name">Plural</div>
+              <div class="row" v-for="(item,i) in caseList" :key="item.eng">
+                <label>{{item.cht}}</label>
+                <input type="text" v-model="inputData.pluralInputs[i]">
+                <div class="ansStatus"><i class="fas fa-check" v-if="inputData.pluralInputs[i] === (ansData &amp;&amp; ansData.pluralInputs[i])"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>

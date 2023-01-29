@@ -1,3 +1,11 @@
+#mode_upload .info button, #mode_upload .info input {
+  display: inline-block;
+  vertical-align: middle;
+}
+#mode_upload .info input {
+  width: 100px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,6 +16,9 @@
 html, body {
   height: 100%;
   width: 100%;
+}
+
+html, body {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -215,4 +226,12 @@ html, body {
 
 .container .top .info button, .container .top .info .text {
   vertical-align: middle;
+}
+
+#mode_upload .info button, #mode_upload .info input {
+  display: inline-block;
+  vertical-align: middle;
+}
+#mode_upload .info input {
+  width: 100px;
 }

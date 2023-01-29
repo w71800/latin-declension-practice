@@ -1,20 +1,44 @@
 export default [
   {
+    "type": "Female",
+    "declension": "1st",
+    "stem": "mor-",
     "single": {
-      "NOM": "test",
-      "GEN": "test",
-      "DAT": "test",
-      "ACC": "test",
-      "ABL": "test",
-      "VOC": "test"
+      "NOM": "mora",
+      "GEN": "morae",
+      "DAT": "morae",
+      "ACC": "moram",
+      "ABL": "mora",
+      "VOC": "mora"
     },
     "plural": {
-      "NOM": "test",
-      "GEN": "test",
-      "DAT": "test",
-      "ACC": "test",
-      "ABL": "test",
-      "VOC": "test"
+      "NOM": "morae",
+      "GEN": "morarum",
+      "DAT": "moris",
+      "ACC": "moras",
+      "ABL": "moris",
+      "VOC": "morae"
+    }
+  },
+  {
+    "type": "Female",
+    "declension": "1st",
+    "stem": "mor-",
+    "single": {
+      "NOM": "homo",
+      "GEN": "morae",
+      "DAT": "morae",
+      "ACC": "moram",
+      "ABL": "mora",
+      "VOC": "mora"
+    },
+    "plural": {
+      "NOM": "morae",
+      "GEN": "morarum",
+      "DAT": "moris",
+      "ACC": "moras",
+      "ABL": "moris",
+      "VOC": "morae"
     }
   }
 ]
