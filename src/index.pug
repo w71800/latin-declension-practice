@@ -18,7 +18,7 @@ html(lang='en')
             @click="toggleMode('test')"
             :class="{is_highlight: mode == 'upload'? true : false}"
             ) 上傳模式
-        #mode_test(v-if='mode == "test"? true : false')
+        #mode_test(modeToBoolean("test"))
           .top
             .userInput
               .status {{ status }}
@@ -49,7 +49,7 @@ html(lang='en')
                 input(type='text', v-model='inputData.pluralInputs[i]')
                 .ansStatus
                   i(class='fas fa-check' v-if='inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])')
-        #mode_upload(v-if='mode == "upload"? true : false')
+        #mode_upload(modeToBoolean("upload"))
           .top
             .userInput
               .status {{ statusUpload }}

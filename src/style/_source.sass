@@ -8,5 +8,5 @@ $color_white: #fff
 @mixin size($w, $h:$w)
   width: $w
   height: $h
-@mixin shadow($x: -2px, $y: 3px)
-  box-shadow: $x $y 3px 1px rgba(85, 85, 85, 0.4) 
+@mixin shadow($dx: 0px, $dy: 0px)
+  box-shadow: calc(-2px + $dx) calc(2px + $dy) 3px 1px rgba(85, 85, 85, 0.4) 

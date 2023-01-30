@@ -1,18 +1,23 @@
 @import './_source'
 	
 #mode_upload
-	.info
-		button, input, select
-			display: inline-block
-			vertical-align: middle
-		input, select
-			width: 100px
-			border-radius: 4px
-			color: #888
-			border: 1px solid #888
-			padding: 3px 5px
-		select
-		option
+	.top
+		.userInput, .userInput *
+			border: 1px solid #000
+		.userInput
+			height: 400px
+		.info
+			button, input, select
+				display: inline-block
+				vertical-align: middle
+			input, select
+				width: 100px
+				border-radius: 4px
+				color: #888
+				border: 1px solid #888
+				padding: 3px 5px
+			select
+			option
 
 ////// functions //////	
 .bottom
@@ -28,9 +33,10 @@
 		font-weight: 300
 		cursor: pointer
 		border-radius: 4px
-		+shadow
+		transition: .3s
+		// +shadow()
 		&:hover
-			+shadow(-4px,4px)
+			// +shadow(-3px,3px)
 			transform: translate(1px,-1px)
 		
 

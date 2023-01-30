@@ -58,7 +58,7 @@ const app = createApp({
   },
   computed: {
     // 從抓到的 currentWord 中複製對應的答案進去 ansData（單數與複數得答案所構成的 Array）
-    ansData: function(){
+    ansData(){
       // 寫的有點醜，但原理就是從 currentWord 中將答案放到 ansData 屬性中的陣列，再於 HTML 中使用 v-if 和來判斷使用者輸入與答案是否有一樣，一樣者則渲染出勾勾的 icon
       if(this.currentWord){
         let ansTemp = {
@@ -71,8 +71,9 @@ const app = createApp({
       }
       else return null
     },
-    // nowMode(){
-    // }
+    modeToBoolean(mode){
+      return this.mode == mode? true : false
+    }
   },
   created: function(){
     // Vue 物件生成時執行 ajax 取得字彙資料包並處理

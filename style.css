@@ -1,8 +1,14 @@
-#mode_upload .info button, #mode_upload .info input, #mode_upload .info select {
+#mode_upload .top .userInput, #mode_upload .top .userInput * {
+  border: 1px solid #000;
+}
+#mode_upload .top .userInput {
+  height: 400px;
+}
+#mode_upload .top .info button, #mode_upload .top .info input, #mode_upload .top .info select {
   display: inline-block;
   vertical-align: middle;
 }
-#mode_upload .info input, #mode_upload .info select {
+#mode_upload .top .info input, #mode_upload .top .info select {
   width: 100px;
   border-radius: 4px;
   color: #888;
@@ -22,10 +28,9 @@
   font-weight: 300;
   cursor: pointer;
   border-radius: 4px;
-  box-shadow: -2px 3px 3px 1px rgba(85, 85, 85, 0.4);
+  transition: 0.3s;
 }
 .bottom button#submit:hover {
-  box-shadow: -4px 4px 3px 1px rgba(85, 85, 85, 0.4);
   transform: translate(1px, -1px);
 }
 
