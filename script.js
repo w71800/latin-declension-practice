@@ -31,7 +31,7 @@ const app = createApp({
         pluralInputs: []
       },
       inputIsSelected: false,
-      mode: "upload"
+      mode: "test"
     }
   },
   watch: {
@@ -82,6 +82,7 @@ const app = createApp({
     let results = []
     let wordRef = ref(db, 'words/')
     let declensionRef = ref(db, 'declensions/')
+
     onValue(wordRef,(snapshot)=>{
       let resultArr = snapshot.val()
       resultArr.forEach((item, i)=>{
@@ -96,6 +97,8 @@ const app = createApp({
       })
       console.log(results);
     })
+
+    this.words = results
   },
 })
 
