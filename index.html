@@ -14,7 +14,7 @@
           <div class="btn mode_test" @click="toggleMode('upload')" :class="{is_highlight: mode == 'test'? true : false}">測驗模式</div>
           <div class="btn mode_upload" @click="toggleMode('test')" :class="{is_highlight: mode == 'upload'? true : false}">上傳模式</div>
         </div>
-        <div id="mode_test" v-if="mode == &quot;test&quot;? true : false">
+        <div id="mode_test" v-if="mode == 'test'? true : false">
           <div class="top">
             <div class="userInput">
               <div class="status">{{ status }}</div>
@@ -55,7 +55,7 @@
             </div>
           </div>
         </div>
-        <div id="mode_upload" v-if="mode == &quot;upload&quot;? true : false">
+        <div id="mode_upload" v-if="mode == 'upload'? true : false">
           <div class="top">
             <div class="userInput">
               <div class="status">{{ statusUpload }}</div>
@@ -72,7 +72,7 @@
               </div>
               <div class="show">
                 <button>變格</button>
-                <select name="delension"> 
+                <select name="declension"> 
                   <option value="" selected disabled>選擇變格</option>
                   <option value="1st">1st</option>
                   <option value="2nd">2nd</option>

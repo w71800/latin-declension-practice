@@ -18,7 +18,7 @@ html(lang='en')
             @click="toggleMode('test')"
             :class="{is_highlight: mode == 'upload'? true : false}"
             ) 上傳模式
-        #mode_test(modeToBoolean("test"))
+        #mode_test(v-if="mode == 'test'? true : false")
           .top
             .userInput
               .status {{ status }}
@@ -49,7 +49,7 @@ html(lang='en')
                 input(type='text', v-model='inputData.pluralInputs[i]')
                 .ansStatus
                   i(class='fas fa-check' v-if='inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])')
-        #mode_upload(modeToBoolean("upload"))
+        #mode_upload(v-if="mode == 'upload'? true : false")
           .top
             .userInput
               .status {{ statusUpload }}
@@ -63,7 +63,7 @@ html(lang='en')
                   option(value="Neuter") Neuter
               .show
                 button 變格
-                select(name="delension") 
+                select(name="declension") 
                   option(value="" selected disabled) 選擇變格
                   option(value="1st") 1st
                   option(value="2nd") 2nd

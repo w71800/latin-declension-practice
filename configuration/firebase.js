@@ -1,8 +1,9 @@
 //- Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
+import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
 //- TODO: Add SDKs for Firebase products that you want to use
 //- https://firebase.google.com/docs/web/setup#available-libraries
+
 
 //- Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,7 +19,6 @@ const firebaseConfig = {
 //- Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase()
-
 
 
 
@@ -53,10 +53,29 @@ const db = getDatabase()
   }
   */
 
+// 取得詞彙資料的 Ref
 function getRef(id) {
   let wordRef = ref(db, 'words/' + id)
   let declensionRef = ref(db, 'declensions/' + id)
   return { wordRef, declensionRef }
+}
+
+function getDB() {
+  let BDRef = ref(db, '/')
+  return { BDRef }
+}
+
+function getData(id) {
+  let resultObj = {}
+  get(getRef(id).wordRef).then((snapshot)=>{
+    console.log(snapshot.val());
+    // resultObj = {...snapshot.val()}
+  })
+  get(getRef(id).declensionRef).then((snapshot)=>{
+    // resultObj = {...snapshot.val()}
+  })
+
+  return resultObj
 }
 
 
@@ -77,4 +96,4 @@ function listenData(id){
     console.log(dataShot);
   })
 }
-export { setData, listenData }
+export default db

@@ -1,8 +1,10 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
 import { url } from "./static/env.js"
-import words from './static/words.js';
+// import words from './static/words.js';
+import db from'./configuration/firebase.js'
+import { ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
 
-console.log(words);
+// console.log(words);
 
 const app = createApp({
   data() {
@@ -17,7 +19,7 @@ const app = createApp({
         {cht:"呼格", eng:"VOC"}
       ],
       // 從資料庫抓到的詞彙資料
-      words,
+      words: [],
       // 使用者的當下輸入
       userInput: "",
       // 當下要測試的字
@@ -36,7 +38,7 @@ const app = createApp({
     userInput: function(newInput,oldInput){
       // 從資料包中尋找對應使用者輸入的單數主格，找到了的話並把它放在 currentWord，沒找到則傳回 0
       this.currentWord = this.words.find( word => word.single.NOM == this.userInput ) || null
-      console.log(this.currentWord)
+      // console.log(this.currentWord)
 
       // 根據有無找到對應的 currentWord 來決定 status 的顯示
       if(typeof(this.currentWord) == "object" && this.currentWord !== null && this.currentWord.type != ""){
@@ -71,47 +73,29 @@ const app = createApp({
       }
       else return null
     },
-    modeToBoolean(mode){
-      return this.mode == mode? true : false
-    }
+    // modeToBoolean(mode){
+    //   // console.log(this.mode);
+    //   return true 
+    // }
   },
   created: function(){
-    // Vue 物件生成時執行 ajax 取得字彙資料包並處理
-    this.words = words
-    // const self = this;
-    // $.ajax({
-    // url,
-    // success: function(evt){
-    //   let dataContainer = []
-    //   let rawData = evt.feed.entry
-    //   let dicUrl = "http://www.latin-dictionary.net/search/latin/"
-    //   rawData.forEach((item)=>{
-    //   let wordData = {
-    //       stem: item.gsx$詞幹.$t,
-    //       type: item.gsx$性別.$t,
-    //       declension: item.gsx$變格.$t,
-    //       single: {
-    //         NOM: item.gsx$nomsg.$t,
-    //         GEN: item.gsx$gensg.$t,
-    //         DAT: item.gsx$datsg.$t,
-    //         ACC: item.gsx$accsg.$t,
-    //         ABL: item.gsx$ablsg.$t,
-    //         VOC: item.gsx$vocsg.$t,
-    //       },
-    //       plural: {
-    //         NOM: item.gsx$nompl.$t,
-    //         GEN: item.gsx$genpl.$t,
-    //         DAT: item.gsx$datpl.$t,
-    //         ACC: item.gsx$accpl.$t,
-    //         ABL: item.gsx$ablpl.$t,
-    //         VOC: item.gsx$vocpl.$t,
-    //       },
-    //     }
-    //     dataContainer.push(wordData)
-    //   }) 
-    //   self.words = dataContainer
-    //   },
-    // })
+    let results = []
+    let wordRef = ref(db, 'words/')
+    let declensionRef = ref(db, 'declensions/')
+    onValue(wordRef,(snapshot)=>{
+      let resultArr = snapshot.val()
+      resultArr.forEach((item, i)=>{
+        results.push(item)
+      })
+      
+    })
+    onValue(declensionRef,(snapshot)=>{
+      let resultArr = snapshot.val()
+      resultArr.forEach((item, i)=>{
+        results[i] = {...resultArr[i]}
+      })
+      console.log(results);
+    })
   },
 })
 
