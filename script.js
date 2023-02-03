@@ -4,6 +4,8 @@ import { url } from "./static/env.js"
 import db from'./configuration/firebase.js'
 import { ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
 
+const wordRef = ref(db, 'words/')
+const declensionRef = ref(db, 'declensions/')
 // console.log(words);
 
 const app = createApp({
@@ -35,14 +37,15 @@ const app = createApp({
     }
   },
   watch: {
-    userInput: function(newInput,oldInput){
+    userInput: function(newInput, oldInput){
       // 從資料包中尋找對應使用者輸入的單數主格，找到了的話並把它放在 currentWord，沒找到則傳回 0
-      this.currentWord = this.words.find( word => word.single.NOM == this.userInput ) || null
+      this.currentWord = this.words.find( word => word.name == this.userInput ) || null
       // console.log(this.currentWord)
 
       // 根據有無找到對應的 currentWord 來決定 status 的顯示
       if(typeof(this.currentWord) == "object" && this.currentWord !== null && this.currentWord.type != ""){
         this.status = "找到了，試試看！"
+        console.log(this.currentWord);
       }else{
         this.status = "資料庫中沒找到這個字..."
       }
@@ -52,10 +55,10 @@ const app = createApp({
     toggleMode(now){
       if(now == "test"){
         this.mode = "upload"
+        // issue：記得要清空所有的資料與輸入
       }else{
         this.mode = "test"
       }
-      console.log(`模式已被更改為：${this.mode}`);
     },
   },
   computed: {
@@ -79,26 +82,26 @@ const app = createApp({
     // }
   },
   created: function(){
-    let results = []
-    let wordRef = ref(db, 'words/')
-    let declensionRef = ref(db, 'declensions/')
+    let tempR = []
 
-    onValue(wordRef,(snapshot)=>{
+    onValue(wordRef, (snapshot)=>{
       let resultArr = snapshot.val()
-      resultArr.forEach((item, i)=>{
-        results.push(item)
+
+      resultArr.forEach((item) => {
+        tempR.push(item)
       })
       
     })
-    onValue(declensionRef,(snapshot)=>{
+    onValue(declensionRef, (snapshot)=>{
       let resultArr = snapshot.val()
-      resultArr.forEach((item, i)=>{
-        results[i] = {...resultArr[i]}
+
+      resultArr.forEach((item, i) => {
+        tempR[i] = {...tempR[i], ...resultArr[i]}
       })
-      console.log(results);
+      console.log(tempR);
     })
 
-    this.words = results
+    this.words = tempR
   },
 })
 

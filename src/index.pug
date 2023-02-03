@@ -26,10 +26,10 @@ html(lang='en')
             .info
               .show
                 button 性別
-                .text(v-if='currentWord') {{currentWord.type}}
+                .text(v-if='currentWord') {{currentWord.gender}}
               .show
                 button 變格
-                .text(v-if='currentWord') {{currentWord.declension}}
+                .text(v-if='currentWord') {{currentWord.type}}
               .show
                 button 詞幹
                 .text(v-if='currentWord') {{currentWord.stem}}
