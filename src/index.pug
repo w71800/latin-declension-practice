@@ -37,33 +37,40 @@ html(lang='en')
           .bottom
             .mainInput.left
               .name Single
-              .row(v-for='(item,i) in caseList')
-                label {{item.cht}}
+              .row(v-for='(c,i) in caseList')
+                label {{c.cht}}
                 input(type='text', v-model='inputData.singleInputs[i]', :key='i')
                 .ansStatus
-                  i(class='fas fa-check' v-if='inputData.singleInputs[i] === (ansData && ansData.singleInputs[i])')
+                  i(
+                    class='fas fa-check' 
+                    v-if='inputData.singleInputs[i] === (answerData && answerData.singleInputs[i])'
+                    )
             .mainInput.right
               .name Plural
-              .row(v-for='(item,i) in caseList', :key='item.eng')
-                label {{item.cht}}
+              .row(v-for='(c,i) in caseList', :key='c.eng')
+                label {{c.cht}}
                 input(type='text', v-model='inputData.pluralInputs[i]')
                 .ansStatus
-                  i(class='fas fa-check' v-if='inputData.pluralInputs[i] === (ansData && ansData.pluralInputs[i])')
+                  i(
+                    class='fas fa-check' 
+                    v-if='inputData.pluralInputs[i] === (answerData && answerData.pluralInputs[i])'
+                    )
         #mode_upload(v-if="mode == 'upload'? true : false")
           .top
             .userInput
               .status {{ statusUpload }}
+              input(v-model='userInput', placeholder='可以輸入 mora 或 homo 試試' name="name")
             .info
               .show
                 button 性別
-                select(name="type") 
+                select(name="gender") 
                   option(value="" selected disabled) 選擇性別
                   option(value="Male") Male
                   option(value="Female") Female
                   option(value="Neuter") Neuter
               .show
                 button 變格
-                select(name="declension") 
+                select(name="type") 
                   option(value="" selected disabled) 選擇變格
                   option(value="1st") 1st
                   option(value="2nd") 2nd
@@ -72,19 +79,21 @@ html(lang='en')
                   option(value="5th") 5th
               .show
                 button 詞幹
-                input(placeholder="輸入詞幹")
+                input(placeholder="輸入詞幹" name="stem")
           hr
           .bottom
             .mainInput.left
               .name Single
-              .row(v-for='(item,i) in caseList')
-                label {{item.cht}}
+              .row(v-for='(c,i) in caseList')
+                label {{c.cht}}
                 input(type='text', v-model='inputData.singleInputs[i]', :key='i')
+                //- input(type='text', v-model='inputData.singleInputs["c"]', :key='i')
             .mainInput.right
               .name Plural
-              .row(v-for='(item,i) in caseList', :key='item.eng')
-                label {{item.cht}}
-                input(type='text', v-model='inputData.pluralInputs[i]')
-            button#submit 新增
+              .row(v-for='(c,i) in caseList', :key='c.eng')
+                label {{c.cht}}
+                input(type='text', v-model='inputData.pluralInputs[i]', :key='i')
+                //- input(type='text', v-model='inputData.pluralInputs["c"]')
+            button#submit(@click="upload") 新增
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(type='module', src='./script.js')
