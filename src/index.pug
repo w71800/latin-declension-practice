@@ -22,7 +22,7 @@ html(lang='en')
           .top
             .userInput
               .status {{ status }}
-              input(v-model='userInput', placeholder='可以輸入 mora 或 homo 試試')
+              input(v-model='inputs.name', placeholder='可以輸入 mora 或 homo 試試')
             .info
               .show
                 button 性別
@@ -37,29 +37,29 @@ html(lang='en')
           .bottom
             .mainInput.left
               .name Single
-              .row(v-for='(c,i) in caseList')
+              .row(v-for='(c, i) in caseList')
                 label {{c.cht}}
-                input(type='text', v-model='inputData.singleInputs[i]', :key='i')
+                input(type='text', v-model='inputs.single[c.eng]', :key='i')
                 .ansStatus
                   i(
                     class='fas fa-check' 
-                    v-if='inputData.singleInputs[i] === (answerData && answerData.singleInputs[i])'
+                    v-if='inputs.single[c.eng] === (answerData && answerData.single[c.eng])'
                     )
             .mainInput.right
               .name Plural
-              .row(v-for='(c,i) in caseList', :key='c.eng')
+              .row(v-for='(c, i) in caseList', :key='c.eng')
                 label {{c.cht}}
-                input(type='text', v-model='inputData.pluralInputs[i]')
+                input(type='text', v-model='inputs.plural[c.eng]')
                 .ansStatus
                   i(
                     class='fas fa-check' 
-                    v-if='inputData.pluralInputs[i] === (answerData && answerData.pluralInputs[i])'
+                    v-if='inputs.plural[c.eng] === (answerData && answerData.plural[c.eng])'
                     )
-        #mode_upload(v-if="mode == 'upload'? true : false")
+        //- #mode_upload(v-if="mode == 'upload'? true : false")
           .top
             .userInput
               .status {{ statusUpload }}
-              input(v-model='userInput', placeholder='可以輸入 mora 或 homo 試試' name="name")
+              input(v-model='inputs.name', placeholder='可以輸入 mora 或 homo 試試' name="name")
             .info
               .show
                 button 性別
@@ -84,16 +84,16 @@ html(lang='en')
           .bottom
             .mainInput.left
               .name Single
-              .row(v-for='(c,i) in caseList')
+              .row(v-for='(c, i) in caseList')
                 label {{c.cht}}
-                input(type='text', v-model='inputData.singleInputs[i]', :key='i')
-                //- input(type='text', v-model='inputData.singleInputs["c"]', :key='i')
+                input(type='text', v-model='inputs.single[c.eng]', :key='i')
             .mainInput.right
               .name Plural
-              .row(v-for='(c,i) in caseList', :key='c.eng')
+              .row(v-for='(c, i) in caseList', :key='c.eng')
                 label {{c.cht}}
-                input(type='text', v-model='inputData.pluralInputs[i]', :key='i')
+                input(type='text', v-model='inputs.plural[c.eng]', :key='i')
                 //- input(type='text', v-model='inputData.pluralInputs["c"]')
             button#submit(@click="upload") 新增
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(type='module', src='./script.js')
+  script(src='./test.js')
