@@ -57,6 +57,15 @@ const app = createApp({
       }else{
         this.mode = "test"
       }
+      // 清空輸入欄
+      this.inputs = {
+        name: "",
+        gender: "",
+        type: "",
+        stem: "",
+        single: {},
+        plural: {}
+      }
     },
     upload(){
       let { 
@@ -73,7 +82,6 @@ const app = createApp({
       word = { name, gender, type, stem }
       declension = { name, single, plural }
 
-      // console.log("上傳後的狀況："+this.words, nextIndex);
       let wordRef = ref(db, "/words/" + nextIndex)
       let declensionRef = ref(db, "/declensions/" + nextIndex)
       set(wordRef, word)
@@ -89,11 +97,12 @@ const app = createApp({
     },
     initData(){
       let tempR = [] 
-
+      /**
+       * 注意：在監聽執行 onValue 時，一開始的 tempR 宣告已不會執行到
+       */
       onValue(wordRef, (snapshot)=>{
-        tempR = [] /* 將閉包的 tempR 清空 */
+        tempR = []                      /* 將閉包的 tempR 清空 */
         let resultArr = snapshot.val()
-        console.log("resultArr", resultArr);
 
         resultArr.forEach((item) => {
           tempR.push(item)
