@@ -57,15 +57,7 @@ const app = createApp({
       }else{
         this.mode = "test"
       }
-      // 清空輸入欄
-      this.inputs = {
-        name: "",
-        gender: "",
-        type: "",
-        stem: "",
-        single: {},
-        plural: {}
-      }
+      this.clearInputs()
     },
     upload(){
       let { 
@@ -123,6 +115,16 @@ const app = createApp({
       },{
         // onlyOnce: true
       })
+    },
+    clearInputs(){
+      this.inputs = {
+        name: "",
+        gender: "",
+        type: "",
+        stem: "",
+        single: {},
+        plural: {}
+      }
     }
   },
   computed: {
