@@ -55,7 +55,7 @@ html(lang='en')
                     class='fas fa-check' 
                     v-if='inputs.plural[c.eng] === (answerData && answerData.plural[c.eng])'
                     )
-        //- #mode_upload(v-if="mode == 'upload'? true : false")
+        #mode_upload(v-if="mode == 'upload'? true : false")
           .top
             .userInput
               .status {{ statusUpload }}
@@ -63,14 +63,14 @@ html(lang='en')
             .info
               .show
                 button 性別
-                select(name="gender") 
+                select(name="gender" v-model="inputs.gender") 
                   option(value="" selected disabled) 選擇性別
-                  option(value="Male") Male
-                  option(value="Female") Female
-                  option(value="Neuter") Neuter
+                  option(value="M") M
+                  option(value="F") F
+                  option(value="N") N
               .show
                 button 變格
-                select(name="type") 
+                select(name="type" v-model="inputs.type") 
                   option(value="" selected disabled) 選擇變格
                   option(value="1st") 1st
                   option(value="2nd") 2nd
@@ -79,7 +79,7 @@ html(lang='en')
                   option(value="5th") 5th
               .show
                 button 詞幹
-                input(placeholder="輸入詞幹" name="stem")
+                input(placeholder="輸入詞幹" name="stem" v-model="inputs.stem")
           hr
           .bottom
             .mainInput.left
@@ -96,4 +96,3 @@ html(lang='en')
             button#submit(@click="upload") 新增
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(type='module', src='./script.js')
-  script(src='./test.js')
