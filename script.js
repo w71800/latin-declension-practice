@@ -125,6 +125,20 @@ const app = createApp({
         single: {},
         plural: {}
       }
+    },
+    random(){
+      let w = this.words[ parseInt(Math.random()*this.words.length ) ]
+      let showWords = this.words.map( word => word.name )
+      let counter = 0
+      let timer = setInterval(() => {
+        this.inputs.name = showWords[ parseInt(Math.random()*showWords.length ) ]
+        counter++
+        if(counter == 10) {
+          clearInterval(timer)
+        }
+      },30)
+      
+      this.inputs.name = w.name
     }
   },
   computed: {

@@ -16,9 +16,6 @@
     border-width: 1px;
   }
 }
-#mode_upload .top .userInput {
-  height: 400px;
-}
 #mode_upload .top .info button, #mode_upload .top .info input, #mode_upload .top .info select {
   display: inline-block;
   vertical-align: middle;
@@ -63,22 +60,16 @@
   animation: buttonRing 1s 1 linear;
 }
 
-#mode_test .top .userInput input {
-  width: 250px;
-  height: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 3px;
-}
-#mode_test .top .status {
-  margin-bottom: 20px;
-}
-#mode_test .top .link {
-  position: absolute;
-  bottom: 15%;
-  right: 18%;
-  width: 30px;
-  height: 30px;
-  border: 1px solid green;
+#mode_test .top .userInput button.random {
+  border: 1px solid #54e1a1;
+  background-color: #fff;
+  color: #54e1a1;
+  font-size: 12px;
+  padding: 3px 9px;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 #mode_test .top .info .text {
   display: inline-block;
@@ -106,9 +97,14 @@
   color: red;
 }
 
-#mode_test .top .userInput .input:focus {
+#mode_test .top .userInput input:focus {
   outline: none;
   border: 2px solid #35598f;
+}
+#mode_test .top .userInput button:hover {
+  border: 1px solid #54e1a1;
+  background-color: #54e1a1;
+  color: #fff;
 }
 
 * {
@@ -203,8 +199,13 @@ html, body {
 }
 #mode_test .top .userInput .status, #mode_upload .top .userInput .status {
   color: #999;
+  margin-bottom: 20px;
 }
 #mode_test .top .userInput input, #mode_upload .top .userInput input {
+  width: 250px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
   padding: 3px 5px;
 }
 #mode_test .top .info, #mode_upload .top .info {

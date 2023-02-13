@@ -19,6 +19,7 @@
             <div class="userInput">
               <div class="status">{{ status }}</div>
               <input v-model="inputs.name" placeholder="可以輸入 mora 或 homo 試試">
+              <button class="random" @click="random()">隨機</button>
             </div>
             <div class="info">
               <div class="show">
@@ -59,7 +60,7 @@
           <div class="top">
             <div class="userInput">
               <div class="status">{{ statusUpload }}</div>
-              <input v-model="inputs.name" placeholder="可以輸入 mora 或 homo 試試" name="name">
+              <input v-model="inputs.name" placeholder="請輸入想上傳的詞彙" name="name">
             </div>
             <div class="info">
               <div class="show">
@@ -112,5 +113,4 @@
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="module" src="./script.js"></script>
-  <script src="./test.js"></script>
 </html>

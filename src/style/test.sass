@@ -3,20 +3,18 @@
 #mode_test
   .top
     .userInput
-      input  
-        width: 250px 
-        height: 30px 
-        border: 1px solid rgba(0, 0, 0, 0.5) 
-        border-radius: 3px 
-    .status 
-      margin-bottom: 20px
-    .link 
-      position: absolute 
-      bottom: 15% 
-      right: 18% 
-      width: 30px 
-      height: 30px 
-      border: 1px solid green 
+      // border: 1px solid #000
+      button.random
+        // display: block
+        border: 1px solid $color_green
+        background-color: $color_white
+        color: $color_green
+        font-size: 12px 
+        padding: 3px 9px 
+        border-radius: 4px
+        margin-left: 10px
+        cursor: pointer
+        transition: .2s
     .info
       .text
         display: inline-block 
@@ -43,7 +41,15 @@
 #mode_test
   .top
     .userInput
-      .input
+      input
         &:focus 
           outline: none 
           border: 2px solid $color_blue
+      button
+        &:hover
+          border: 1px solid $color_green
+          background-color: $color_green
+          color: $color_white
+          // transform: translate(-2px, -2px)
+          // box-shadow: -1px 1px 3px 1px rgba(85, 85, 85, 0.4) 
+          // +shadow(2px, 5px)

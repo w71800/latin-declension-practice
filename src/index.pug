@@ -23,6 +23,7 @@ html(lang='en')
             .userInput
               .status {{ status }}
               input(v-model='inputs.name', placeholder='可以輸入 mora 或 homo 試試')
+              button.random(@click="random()") 隨機
             .info
               .show
                 button 性別
@@ -59,7 +60,7 @@ html(lang='en')
           .top
             .userInput
               .status {{ statusUpload }}
-              input(v-model='inputs.name', placeholder='可以輸入 mora 或 homo 試試' name="name")
+              input(v-model='inputs.name', placeholder='請輸入想上傳的詞彙' name="name")
             .info
               .show
                 button 性別
