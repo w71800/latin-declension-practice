@@ -10,10 +10,12 @@
         background-color: $color_white
         color: $color_green
         font-size: 12px 
-        padding: 3px 9px 
+        padding: 3px 9px
+        line-height: 20px 
         border-radius: 4px
         margin-left: 10px
         cursor: pointer
+        vertical-align: middle
         transition: .2s
     .info
       .text
@@ -45,7 +47,9 @@
         &:focus 
           outline: none 
           border: 2px solid $color_blue
-      button
+        &.answerFound
+          border: 2px solid $color_green
+      button.random
         &:hover
           border: 1px solid $color_green
           background-color: $color_green
@@ -53,3 +57,16 @@
           // transform: translate(-2px, -2px)
           // box-shadow: -1px 1px 3px 1px rgba(85, 85, 85, 0.4) 
           // +shadow(2px, 5px)
+        &.inactive
+          cursor: none
+          border: 1px solid #999
+          background-color: #999
+
+  .bottom
+    .mainInput
+      .row
+        input
+          &.right
+            border: 2px solid $color_green
+          &.wrong
+            border: 2px solid $color_red

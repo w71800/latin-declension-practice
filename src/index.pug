@@ -22,8 +22,15 @@ html(lang='en')
           .top
             .userInput
               .status {{ status }}
-              input(v-model='inputs.name', placeholder='可以輸入 mora 或 homo 試試')
-              button.random(@click="random()") 隨機
+              input(
+                v-model='inputs.name'
+                placeholder='可以輸入 mora 或 homo 試試'
+                :class="{ answerFound: currentWord }"
+                )
+              button.random(
+                @click="random()"
+                :class="{ inactive: randomInactive }"
+                ) 隨機
             .info
               .show
                 button 性別
@@ -40,21 +47,35 @@ html(lang='en')
               .name Single
               .row(v-for='(c, i) in caseList')
                 label {{c.cht}}
-                input(type='text', v-model='inputs.single[c.eng]', :key='i')
+                input(
+                  type='text' 
+                  v-model='inputs.single[c.eng]' 
+                  :key='i'
+                  :class="{ 
+                    right: checkAnswer(c, 'single'), 
+                    wrong: checkAnswer(c, 'single') == false 
+                    }"
+                  )
                 .ansStatus
                   i(
                     class='fas fa-check' 
-                    v-if='inputs.single[c.eng] === (answerData && answerData.single[c.eng])'
+                    v-if='checkAnswer(c, "single")'
                     )
             .mainInput.right
               .name Plural
               .row(v-for='(c, i) in caseList', :key='c.eng')
                 label {{c.cht}}
-                input(type='text', v-model='inputs.plural[c.eng]')
+                input(type='text' 
+                v-model='inputs.plural[c.eng]'
+                :class="{ 
+                  right: checkAnswer(c, 'plural')
+                  wrong: checkAnswer(c, 'plural') == false 
+                  }"
+                )
                 .ansStatus
                   i(
                     class='fas fa-check' 
-                    v-if='inputs.plural[c.eng] === (answerData && answerData.plural[c.eng])'
+                    v-if='checkAnswer(c, "plural")'
                     )
         #mode_upload(v-if="mode == 'upload'? true : false")
           .top

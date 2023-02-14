@@ -23,6 +23,7 @@ const app = createApp({
       words: [],
       // 當下要測試的字
       currentWord: null,
+      lastWord: null,
       status: "使用者尚未輸入...",
       statusUpload: "尚未輸入",
       inputIsSelected: false,
@@ -36,6 +37,7 @@ const app = createApp({
         single: {},
         plural: {}
       },
+      randomInactive: false
     }
   },
   watch: {
@@ -127,22 +129,47 @@ const app = createApp({
       }
     },
     random(){
+      this.clearInputs()
       let w = this.words[ parseInt(Math.random()*this.words.length ) ]
-      let showWords = this.words.map( word => word.name )
+      let showWords = this.words.map( word => word.name + " " )
       let counter = 0
+      // 防重複
+      if(w == this.lastWord){
+        let wordsTemp = [ ...this.words ]
+        let wIndex = wordsTemp.indexOf(w)
+        wordsTemp.splice(wIndex, 1)
+        w = wordsTemp[ parseInt(Math.random()*this.words.length ) ]
+      }
       let timer = setInterval(() => {
+        this.randomInactive = true
         this.inputs.name = showWords[ parseInt(Math.random()*showWords.length ) ]
         counter++
         if(counter == 10) {
+          this.randomInactive = false
           clearInterval(timer)
+          this.inputs.name = w.name
+          this.lastWord = w
         }
       },30)
-      
-      this.inputs.name = w.name
+    },
+    checkAnswer(c, sp){
+      /**
+       * 顯示為綠色的條件
+       * 1. 輸入不為空且要等於答案
+       * 顯示為紅色的條件
+       * 1. 已經有答案且...
+       */
+      let input = this.inputs[sp][c.eng]
+      let anwser = this.answerData && this.answerData[sp][c.eng]
+      if(input && input == anwser){
+        return true
+      }else if(input != null){
+        return false
+      }
+      return
     }
   },
   computed: {
-    // 從抓到的 currentWord 中複製對應的答案進去 ansData（單數與複數得答案所構成的 Array）
     answerData(){
       let ansTemp = {
         single: {},

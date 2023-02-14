@@ -18,7 +18,7 @@
           <div class="top">
             <div class="userInput">
               <div class="status">{{ status }}</div>
-              <input v-model="inputs.name" placeholder="可以輸入 mora 或 homo 試試">
+              <input v-model="inputs.name" placeholder="可以輸入 mora 或 homo 試試" :class="{ answerFound: currentWord }">
               <button class="random" @click="random()">隨機</button>
             </div>
             <div class="info">
@@ -42,7 +42,7 @@
               <div class="name">Single</div>
               <div class="row" v-for="(c, i) in caseList">
                 <label>{{c.cht}}</label>
-                <input type="text" v-model="inputs.single[c.eng]" :key="i">
+                <input type="text" v-model="inputs.single[c.eng]" :key="i" :class="{ right: checkAnswer(c, 'single'), wrong: checkAnswer(c, 'single') == false }">
                 <div class="ansStatus"><i class="fas fa-check" v-if="inputs.single[c.eng] === (answerData &amp;&amp; answerData.single[c.eng])"></i></div>
               </div>
             </div>
@@ -50,7 +50,7 @@
               <div class="name">Plural</div>
               <div class="row" v-for="(c, i) in caseList" :key="c.eng">
                 <label>{{c.cht}}</label>
-                <input type="text" v-model="inputs.plural[c.eng]">
+                <input type="text" v-model="inputs.plural[c.eng]" :class="{ right: checkAnswer(c, 'plural'), wrong: checkAnswer(c, 'plural') == false }">
                 <div class="ansStatus"><i class="fas fa-check" v-if="inputs.plural[c.eng] === (answerData &amp;&amp; answerData.plural[c.eng])"></i></div>
               </div>
             </div>
