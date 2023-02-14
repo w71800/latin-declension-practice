@@ -27,7 +27,7 @@ const app = createApp({
       status: "使用者尚未輸入...",
       statusUpload: "尚未輸入",
       inputIsSelected: false,
-      mode: "test", 
+      mode: "upload", 
       // 新版資料架構
       inputs: {
         name: "",
@@ -43,12 +43,16 @@ const app = createApp({
   watch: {
     "inputs.name": function(newInput, oldInput){
       this.currentWord = this.words.find( word => word.name == newInput ) || null
-      // // this.currentWord = 1
-      // // 根據有無找到對應的 currentWord 來決定 status 的顯示
-      // if(typeof(this.currentWord) == "object" && this.currentWord !== null && this.currentWord.type != ""){
-      //   this.status = "找到了，試試看！"
-      // }else{
-      //   this.status = "資料庫中沒找到這個字..."
+      /**
+       * status 顯示的規則
+       * 1. inputs.name 中內部有東西但錯的時候：檢索中...
+       * 2. inputs.name 中內部有東西但對的時候：找到了！
+       * 3. inputs.name 內部無東西的時候：使用者尚未輸入...
+     */
+      // if(this.mode == "upload"){
+      //   let input = this.inputs.name
+      //   let answer = this.currentWord.name
+      //   this.status = "檢索中..."
       // }
     },
   },
@@ -62,32 +66,39 @@ const app = createApp({
       this.clearInputs()
     },
     upload(){
-      let { 
-        name, 
-        gender,
-        type,
-        stem,
-        single,
-        plural 
-      } = this.inputs
-      let word, declension = {}
-      let nextIndex = this.words.length
-
-      word = { name, gender, type, stem }
-      declension = { name, single, plural }
-
-      let wordRef = ref(db, "/words/" + nextIndex)
-      let declensionRef = ref(db, "/declensions/" + nextIndex)
-      set(wordRef, word)
-      set(declensionRef, declension).then(()=>{
-        this.statusUpload = "新增成功！"
-        setTimeout(()=>{
-          this.statusUpload = "可以繼續新增"
-        },1000)
-      }).catch( err =>{
-        console.log(err)
-      })
-      this.statusUpload = "新增中..."
+      /**
+       * 以下流程必須要在 validator 為 true 時才會執行
+       */
+      let r = this.validator()
+      if(r){
+        let { 
+          name, 
+          gender,
+          type,
+          stem,
+          single,
+          plural 
+        } = this.inputs
+        let word, declension = {}
+        let nextIndex = this.words.length
+  
+        word = { name, gender, type, stem }
+        declension = { name, single, plural }
+  
+        let wordRef = ref(db, "/words/" + nextIndex)
+        let declensionRef = ref(db, "/declensions/" + nextIndex)
+        set(wordRef, word)
+        set(declensionRef, declension).then(()=>{
+          this.statusUpload = "新增成功！"
+          setTimeout(()=>{
+            this.statusUpload = "可以繼續新增"
+          },1000)
+        }).catch( err =>{
+          console.log(err)
+        })
+        this.statusUpload = "新增中..."
+      }
+      
     },
     initData(){
       let tempR = [] 
@@ -140,6 +151,7 @@ const app = createApp({
         wordsTemp.splice(wIndex, 1)
         w = wordsTemp[ parseInt(Math.random()*this.words.length ) ]
       }
+
       let timer = setInterval(() => {
         this.randomInactive = true
         this.inputs.name = showWords[ parseInt(Math.random()*showWords.length ) ]
@@ -167,6 +179,32 @@ const app = createApp({
         return false
       }
       return
+    },
+    enterPressed(e){
+      if(e.keyCode == 13){
+        let r = confirm("確定要上傳嗎？")
+        if(r){
+          this.upload()
+        }else{
+          console.log("canceled");
+        }
+      }
+    },
+    validator(){
+      /**
+       * inputs: {
+          name: "",
+          gender: "",
+          type: "",
+          stem: "",
+          single: {},
+          plural: {}
+        },
+       */
+      /**
+       * 預計可以抓到哪些地方沒有填好有問題，並且在 Status 或者 alert 上提示哪些地方沒有填好
+       */
+
     }
   },
   computed: {
@@ -188,26 +226,17 @@ const app = createApp({
       this.caseList.forEach( c => cases.push(c.eng) )
       return cases
     },
-    // modeToBoolean(mode){
-    //   // console.log(this.mode);
-    //   return true 
-    // }
   },
   created(){
     this.initData()
+    document.addEventListener("keyup", this.enterPressed)
   },
   // mounted(){
   //   console.log(this.words);
   // }
 })
 
+
+
 app.mount("#app")
 
-$(".userInput > input").focus(()=>{
-  app.inputIsSelected = true
-  console.log($("input"))
-})
-$(".userInput > input").blur(()=>{
-  app.status = "使用者未輸入..."
-  app.inputIsSelected = false
-})

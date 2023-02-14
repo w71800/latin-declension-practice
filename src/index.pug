@@ -51,10 +51,10 @@ html(lang='en')
                   type='text' 
                   v-model='inputs.single[c.eng]' 
                   :key='i'
-                  :class="{ 
+                  :class=`{ 
                     right: checkAnswer(c, 'single'), 
                     wrong: checkAnswer(c, 'single') == false 
-                    }"
+                    }`
                   )
                 .ansStatus
                   i(
@@ -67,10 +67,10 @@ html(lang='en')
                 label {{c.cht}}
                 input(type='text' 
                 v-model='inputs.plural[c.eng]'
-                :class="{ 
-                  right: checkAnswer(c, 'plural')
+                :class=`{ 
+                  right: checkAnswer(c, 'plural'),
                   wrong: checkAnswer(c, 'plural') == false 
-                  }"
+                  }`
                 )
                 .ansStatus
                   i(
@@ -80,7 +80,7 @@ html(lang='en')
         #mode_upload(v-if="mode == 'upload'? true : false")
           .top
             .userInput
-              .status {{ statusUpload }}
+              .status {{ status }}
               input(v-model='inputs.name', placeholder='請輸入想上傳的詞彙' name="name")
             .info
               .show
@@ -114,7 +114,6 @@ html(lang='en')
               .row(v-for='(c, i) in caseList', :key='c.eng')
                 label {{c.cht}}
                 input(type='text', v-model='inputs.plural[c.eng]', :key='i')
-                //- input(type='text', v-model='inputData.pluralInputs["c"]')
-            button#submit(@click="upload") 新增
+            .uploadHint 按下 ⏎ 上傳
   script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(type='module', src='./script.js')
