@@ -27,6 +27,12 @@
     opacity: 1;
   }
 }
+#mode_upload .top .userInput .status.OK {
+  color: #54e1a1;
+}
+#mode_upload .top .userInput .status.notOK {
+  color: #e15454;
+}
 #mode_upload .top .info button, #mode_upload .top .info input, #mode_upload .top .info select {
   display: inline-block;
   vertical-align: middle;
@@ -118,6 +124,9 @@
   color: red;
 }
 
+#mode_test .top .userInput .status.answerFound {
+  color: #54e1a1;
+}
 #mode_test .top .userInput input:focus {
   outline: none;
   border: 2px solid #35598f;

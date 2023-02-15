@@ -17,8 +17,8 @@
         <div id="mode_test" v-if="mode == 'test'? true : false">
           <div class="top">
             <div class="userInput">
-              <div class="status">{{ status }}</div>
-              <input v-model="inputs.name" placeholder="可以輸入 mora 或 homo 試試" :class="{ answerFound: currentWord }">
+              <div class="status" :class="{ answerFound: currentWord }">{{ status }}</div>
+              <input v-model="inputs.name" placeholder="可以輸入 mora 或 homo 試試" :class="{ answerFound: currentWord }" @focus=" status = '正在輸入...' " @blur=" status = '尚未輸入' ">
               <button class="random" @click="random()" :class="{ inactive: randomInactive }">隨機</button>
             </div>
             <div class="info">
@@ -65,7 +65,7 @@
         <div id="mode_upload" v-if="mode == 'upload'? true : false">
           <div class="top">
             <div class="userInput">
-              <div class="status">{{ status }}</div>
+              <div class="status" :class="statusClass">{{ status }}</div>
               <input v-model="inputs.name" placeholder="請輸入想上傳的詞彙" name="name">
             </div>
             <div class="info">

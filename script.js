@@ -24,18 +24,29 @@ const app = createApp({
       // 當下要測試的字
       currentWord: null,
       lastWord: null,
-      status: "使用者尚未輸入...",
+      status: "尚未輸入",
+      statusClass: null,
       statusUpload: "尚未輸入",
       inputIsSelected: false,
       mode: "upload", 
       // 新版資料架構
+      // inputs: {
+      //   name: "",
+      //   gender: "",
+      //   type: "",
+      //   stem: "",
+      //   single: {},
+      //   plural: {}
+      // },
+
+      // 開發用資料
       inputs: {
-        name: "",
-        gender: "",
-        type: "",
-        stem: "",
-        single: {},
-        plural: {}
+        name: "rex",
+        gender: "M",
+        type: "3rd",
+        stem: "reg-",
+        single: {NOM:"rex", GEN:"regis", DAT: "regi", ACC: "regem", ABL: "rege", VOC: "rex"},
+        plural: {NOM:"reges", GEN:"regum", DAT: "regibus", ACC: "reges", ABL: "regibus", VOC: "reges"}
       },
       randomInactive: false
     }
@@ -43,17 +54,16 @@ const app = createApp({
   watch: {
     "inputs.name": function(newInput, oldInput){
       this.currentWord = this.words.find( word => word.name == newInput ) || null
-      /**
-       * status 顯示的規則
-       * 1. inputs.name 中內部有東西但錯的時候：檢索中...
-       * 2. inputs.name 中內部有東西但對的時候：找到了！
-       * 3. inputs.name 內部無東西的時候：使用者尚未輸入...
-     */
-      // if(this.mode == "upload"){
-      //   let input = this.inputs.name
-      //   let answer = this.currentWord.name
-      //   this.status = "檢索中..."
-      // }
+
+      if(this.inputs.name == ""){
+        this.status = "尚未輸入"
+      }
+      if(this.randomInactive){
+        this.status = "隨機挑選中"
+      }
+      if(this.mode == "test"){
+        this.currentWord? this.status = "找到了！": this.status = "正在輸入..."
+      }
     },
   },
   methods: {
@@ -87,16 +97,20 @@ const app = createApp({
   
         let wordRef = ref(db, "/words/" + nextIndex)
         let declensionRef = ref(db, "/declensions/" + nextIndex)
+        console.log(word, declension);
         set(wordRef, word)
         set(declensionRef, declension).then(()=>{
-          this.statusUpload = "新增成功！"
+          this.status = "新增成功！"
+          this.clearInputs()
           setTimeout(()=>{
-            this.statusUpload = "可以繼續新增"
+            this.status = "可以繼續新增"
           },1000)
         }).catch( err =>{
           console.log(err)
         })
         this.statusUpload = "新增中..."
+      }else{
+        console.log("有問題");
       }
       
     },
@@ -180,8 +194,8 @@ const app = createApp({
       }
       return
     },
-    enterPressed(e){
-      if(e.keyCode == 13){
+    enterPressed(evt){
+      if(evt.keyCode == 13 && this.mode == "upload"){
         let r = confirm("確定要上傳嗎？")
         if(r){
           this.upload()
@@ -190,6 +204,22 @@ const app = createApp({
         }
       }
     },
+    resetStatus(){
+      let timer = setTimeout(()=>{
+        this.statusClass = null
+        this.status = "使用者尚未輸入..."
+        clearTimeout(timer)
+      }, 5000)
+    },
+    // showStatus(){
+    // /**
+    //  * 主要根據不同狀況來控制不同狀態下的 status 字樣與顏色
+    //  * 0. 初始狀況時顯示 "尚未輸入"，並且為灰色 done
+    //  * 1. 找到字（不管是打字輸入或者是隨機）時必顯示 "找到了！"，並且為綠色
+    //  * 2. 透過打字輸入時，沒找到字的話顯示 "正在輸入"，並且為灰色
+    //  * 3. 
+    //  */
+    // },
     validator(){
       /**
        * inputs: {
@@ -202,9 +232,61 @@ const app = createApp({
         },
        */
       /**
-       * 預計可以抓到哪些地方沒有填好有問題，並且在 Status 或者 alert 上提示哪些地方沒有填好
+       * 1. 抓到哪些地方沒有填好有問題，並且在 Status 或者 alert 上提示哪些地方沒有填好
+       * 2. 檢查有無重複的字，而後將輸入欄清空
        */
+      let es = Object.entries(this.inputs)
+      let list = [] /* 有問題的清單 */
+      let isExist = this.words.find( word => word.name == this.inputs.name )
+      for(let e of es){
+        let key = e[0]
+        let value = e[1]
+        if(value == "") {
+          list.push(key)
+        }
+        // 如果是 single 和 plural 的話，檢查物件內的是否有空缺
+        if( key == "single" || key == "plural" ){
+          let declensionV = Object.entries(value) /* [ ["NOM", "？"], ["GEN", "？"], ... ] */
+          let caseResult = declensionV.map( r => r[0] ) /* 抽出有的 case */
+          let cases = [...this.cases]
 
+          // 抓出答案是 ""
+          let valueResult = declensionV.filter( r => r[1] == "" ) /* 抽出值為 "" */
+          valueResult.forEach( item => {
+            list.push(`${key} ${item[0]}`) // single NOM
+          } )
+
+          // 抓出沒有的 case
+          let r = cases.filter( c => {
+            return caseResult.indexOf(c) == -1
+          })
+          // 再推入問題清單
+          r.forEach( item => list.push(`${key} ${item}`) )
+          
+        }
+      }
+      if(list.length != 0){
+        this.status = "資料有缺，請補上"
+        this.statusClass = "notOK"
+        alert(list.join("\n") + "\n\n有問題！")
+        this.resetStatus()
+
+        return false
+      }else if(isExist){
+        this.status = `${this.inputs.name} 已經有了！`
+        this.statusClass = "notOK"
+        alert(`${this.inputs.name} 已經有了！`)
+        this.clearInputs()
+        this.resetStatus()
+
+        return false
+      }else{
+        this.statusClass = "OK"
+        this.resetStatus()
+
+        return true
+      }
+      return
     }
   },
   computed: {
@@ -235,6 +317,7 @@ const app = createApp({
   //   console.log(this.words);
   // }
 })
+
 
 
 

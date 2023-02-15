@@ -21,11 +21,13 @@ html(lang='en')
         #mode_test(v-if="mode == 'test'? true : false")
           .top
             .userInput
-              .status {{ status }}
+              .status(:class="{ answerFound: currentWord }") {{ status }}
               input(
                 v-model='inputs.name'
                 placeholder='可以輸入 mora 或 homo 試試'
                 :class="{ answerFound: currentWord }"
+                @focus=" status = '正在輸入...' "
+                @blur=" status = '尚未輸入' "
                 )
               button.random(
                 @click="random()"
@@ -80,7 +82,7 @@ html(lang='en')
         #mode_upload(v-if="mode == 'upload'? true : false")
           .top
             .userInput
-              .status {{ status }}
+              .status(:class="statusClass") {{ status }}
               input(v-model='inputs.name', placeholder='請輸入想上傳的詞彙' name="name")
             .info
               .show
