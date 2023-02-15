@@ -96,6 +96,7 @@ const app = createApp({
       if(r == "LACK"){
         this.status = "資料有缺，請補上"
         this.statusClass = "notOK"
+        this.resetStatus()
       }else if(r == "EXIST"){
         console.log(r);
         this.status = `${this.inputs.name} 已經有了！`
