@@ -30,24 +30,24 @@ const app = createApp({
       inputIsSelected: false,
       mode: "upload", 
       // 新版資料架構
-      // inputs: {
-      //   name: "",
-      //   gender: "",
-      //   type: "",
-      //   stem: "",
-      //   single: {},
-      //   plural: {}
-      // },
+      inputs: {
+        name: "",
+        gender: "",
+        type: "",
+        stem: "",
+        single: {},
+        plural: {}
+      },
 
       // 開發用資料
-      inputs: {
-        name: "rex",
-        gender: "M",
-        type: "3rd",
-        stem: "reg-",
-        single: {NOM:"rex", GEN:"regis", DAT: "regi", ACC: "regem", ABL: "rege", VOC: "rex"},
-        plural: {NOM:"reges", GEN:"regum", DAT: "regibus", ACC: "reges", ABL: "regibus", VOC: "reges"}
-      },
+      // inputs: {
+      //   name: "rex",
+      //   gender: "M",
+      //   type: "3rd",
+      //   stem: "reg-",
+      //   single: {NOM:"rex", GEN:"regis", DAT: "regi", ACC: "regem", ABL: "rege", VOC: "rex"},
+      //   plural: {NOM:"reges", GEN:"regum", DAT: "regibus", ACC: "reges", ABL: "regibus", VOC: "reges"}
+      // },
       randomInactive: false
     }
   },
@@ -55,14 +55,26 @@ const app = createApp({
     "inputs.name": function(newInput, oldInput){
       this.currentWord = this.words.find( word => word.name == newInput ) || null
 
-      if(this.inputs.name == ""){
-        this.status = "尚未輸入"
+      if(this.mode == "test") {
+        if(newInput == ""){
+          this.status = "尚未輸入"
+          this.statusClass = null
+        }else if(this.currentWord == null){
+          this.status = "搜尋中..."
+          this.statusClass = null
+        }else{
+          this.status = "找到了！"
+          this.statusClass = "answerFound"
+        }
       }
-      if(this.randomInactive){
-        this.status = "隨機挑選中"
-      }
-      if(this.mode == "test"){
-        this.currentWord? this.status = "找到了！": this.status = "正在輸入..."
+      if(this.mode == "upload"){
+        if(newInput == ""){
+          this.status = "尚未輸入"
+          this.statusClass = null
+        }else{
+          this.status = "輸入中..."
+          this.statusClass = null
+        }
       }
     },
   },
@@ -77,10 +89,21 @@ const app = createApp({
     },
     upload(){
       /**
-       * 以下流程必須要在 validator 為 true 時才會執行
+       * 以下流程必須要在 validator 為 不為 "LACK" 或 "EXIST" 時才會執行
        */
       let r = this.validator()
-      if(r){
+
+      if(r == "LACK"){
+        this.status = "資料有缺，請補上"
+        this.statusClass = "notOK"
+      }else if(r == "EXIST"){
+        console.log(r);
+        this.status = `${this.inputs.name} 已經有了！`
+        this.statusClass = "notOK"
+        setTimeout(()=>{
+          this.clearInputs()
+        }, 1000)
+      }else{
         let { 
           name, 
           gender,
@@ -91,7 +114,7 @@ const app = createApp({
         } = this.inputs
         let word, declension = {}
         let nextIndex = this.words.length
-  
+
         word = { name, gender, type, stem }
         declension = { name, single, plural }
   
@@ -101,18 +124,14 @@ const app = createApp({
         set(wordRef, word)
         set(declensionRef, declension).then(()=>{
           this.status = "新增成功！"
+          this.statusClass = "OK"
           this.clearInputs()
-          setTimeout(()=>{
-            this.status = "可以繼續新增"
-          },1000)
+          this.resetStatus()
         }).catch( err =>{
           console.log(err)
         })
-        this.statusUpload = "新增中..."
-      }else{
-        console.log("有問題");
+        this.status = "新增中..."
       }
-      
     },
     initData(){
       let tempR = [] 
@@ -207,7 +226,7 @@ const app = createApp({
     resetStatus(){
       let timer = setTimeout(()=>{
         this.statusClass = null
-        this.status = "使用者尚未輸入..."
+        this.status = "尚未輸入"
         clearTimeout(timer)
       }, 5000)
     },
@@ -238,6 +257,7 @@ const app = createApp({
       let es = Object.entries(this.inputs)
       let list = [] /* 有問題的清單 */
       let isExist = this.words.find( word => word.name == this.inputs.name )
+      // 驗證的底層邏輯
       for(let e of es){
         let key = e[0]
         let value = e[1]
@@ -262,28 +282,20 @@ const app = createApp({
           })
           // 再推入問題清單
           r.forEach( item => list.push(`${key} ${item}`) )
-          
         }
       }
+
+      // 後續處理
       if(list.length != 0){
-        this.status = "資料有缺，請補上"
-        this.statusClass = "notOK"
         alert(list.join("\n") + "\n\n有問題！")
-        this.resetStatus()
-
-        return false
+        return "LACK"
       }else if(isExist){
-        this.status = `${this.inputs.name} 已經有了！`
-        this.statusClass = "notOK"
         alert(`${this.inputs.name} 已經有了！`)
-        this.clearInputs()
-        this.resetStatus()
-
-        return false
+        return "EXIST"
       }else{
-        this.statusClass = "OK"
-        this.resetStatus()
-
+        /**
+         * 這邊沒問題就回傳 true 的結果給 upload
+         */
         return true
       }
       return

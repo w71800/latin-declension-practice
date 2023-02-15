@@ -18,7 +18,7 @@
           <div class="top">
             <div class="userInput">
               <div class="status" :class="{ answerFound: currentWord }">{{ status }}</div>
-              <input v-model="inputs.name" placeholder="可以輸入 mora 或 homo 試試" :class="{ answerFound: currentWord }" @focus=" status = '正在輸入...' " @blur=" status = '尚未輸入' ">
+              <input v-model="inputs.name" placeholder="可以輸入 mora 或 homo 試試" :class="{ answerFound: currentWord }">
               <button class="random" @click="random()" :class="{ inactive: randomInactive }">隨機</button>
             </div>
             <div class="info">

@@ -26,8 +26,6 @@ html(lang='en')
                 v-model='inputs.name'
                 placeholder='可以輸入 mora 或 homo 試試'
                 :class="{ answerFound: currentWord }"
-                @focus=" status = '正在輸入...' "
-                @blur=" status = '尚未輸入' "
                 )
               button.random(
                 @click="random()"
