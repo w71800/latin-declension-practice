@@ -124,8 +124,12 @@ const app = createApp({
         console.log(word, declension);
         set(wordRef, word)
         set(declensionRef, declension).then(()=>{
+          this.clearInputs()
           this.status = "新增成功！"
           this.statusClass = "OK"
+          setTimeout(()=>{
+            this.resetStatus()
+          })
           this.clearInputs()
           this.resetStatus()
         }).catch( err =>{
