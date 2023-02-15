@@ -1,108 +1,338 @@
-console.clear()
+import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+import { url } from "./static/env.js"
+// import words from './static/words.js';
+import db from'./configuration/firebase.js'
+import { ref, set, onValue, get, off } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
 
-// 這邊是 sheet 的 ID
-var sheetID = "1wsjKUia5KvuUzFjs_97a5tir3583KZXDIuBGvmKYsZQ"
-var sheetNum = 1
-// 這是 url 的格式
-const url = "https://spreadsheets.google.com/feeds/list/" + sheetID +"/" + sheetNum + "/public/values?alt=json";
+const wordRef = ref(db, 'words/')
+const declensionRef = ref(db, 'declensions/')
 
+const app = createApp({
+  data() {
+    return {
+      // 格位名稱列表
+      caseList: [
+        {cht: "主格", eng: "NOM"},
+        {cht: "屬格", eng: "GEN"},
+        {cht: "與格", eng: "DAT"},
+        {cht: "受格", eng: "ACC"},
+        {cht: "奪格", eng: "ABL"},
+        {cht: "呼格", eng: "VOC"}
+      ],
+      // 從資料庫抓到的詞彙資料
+      words: [],
+      // 當下要測試的字
+      currentWord: null,
+      lastWord: null,
+      status: "尚未輸入",
+      statusClass: null,
+      statusUpload: "尚未輸入",
+      inputIsSelected: false,
+      mode: "test", 
+      // 新版資料架構
+      inputs: {
+        name: "",
+        gender: "",
+        type: "",
+        stem: "",
+        single: {},
+        plural: {}
+      },
 
-var vm = new Vue({
-  el: "#app",
-  data: {
-    caseList: [
-      {cht:"主格",eng:"NOM"},
-      {cht:"屬格",eng:"GEN"},
-      {cht:"與格",eng:"DAT"},
-      {cht:"受格",eng:"ACC"},
-      {cht:"奪格",eng:"ABL"},
-      {cht:"呼格",eng:"VOC"}
-    ],
-    words: [],
-    userInput: "",
-    currentWord: null,
-    status: "使用者尚未輸入...",
-    inputData: {
-      singleInputs: [],
-      pluralInputs: []
-    },
-    inputIsSelected: false,
+      // 開發用資料
+      // inputs: {
+      //   name: "rex",
+      //   gender: "M",
+      //   type: "3rd",
+      //   stem: "reg-",
+      //   single: {NOM:"rex", GEN:"regis", DAT: "regi", ACC: "regem", ABL: "rege", VOC: "rex"},
+      //   plural: {NOM:"reges", GEN:"regum", DAT: "regibus", ACC: "reges", ABL: "regibus", VOC: "reges"}
+      // },
+      randomInactive: false
+    }
   },
   watch: {
-    userInput: function(newInput,oldInput){
-      // 從資料包中尋找對應使用者輸入的單數主格，找到了的話並把它放在 currentWord，沒找到則傳回 0
-      this.currentWord = this.words.find( word => word.single.NOM == this.userInput ) || null
-      console.log(this.currentWord)
+    "inputs.name": function(newInput, oldInput){
+      this.currentWord = this.words.find( word => word.name == newInput ) || null
 
-      // 根據有無找到對應的 currentWord 來決定 status 的顯示
-      if(typeof(this.currentWord) == "object" && this.currentWord !== null && this.currentWord.type != ""){
-        this.status = "找到了，試試看！"
-      }else{
-        this.status = "資料庫中沒找到這個字..."
+      if(this.mode == "test") {
+        if(newInput == ""){
+          this.status = "尚未輸入"
+          this.statusClass = null
+        }else if(this.currentWord == null){
+          this.status = "搜尋中..."
+          this.statusClass = null
+        }else{
+          this.status = "找到了！"
+          this.statusClass = "answerFound"
+        }
+      }
+      if(this.mode == "upload"){
+        if(newInput == ""){
+          this.status = "尚未輸入"
+          this.statusClass = null
+        }else{
+          this.status = "輸入中..."
+          this.statusClass = null
+        }
       }
     },
   },
-  computed: {
-    // 從抓到的 currentWord 中複製對應的答案進去 ansData（單數與複數得答案所構成的 Array）
-    ansData: function(){
-      // 寫的有點醜，但原理就是從 currentWord 中將答案放到 ansData 屬性中的陣列，再於 HTML 中使用 v-if 和來判斷使用者輸入與答案是否有一樣，一樣者則渲染出勾勾的 icon
-      if(this.currentWord){
-        let ansTemp = {
-          singleInputs: [],
-          pluralInputs: []
+  methods: {
+    toggleMode(now){
+      if(now == "test"){
+        this.mode = "upload"
+      }else{
+        this.mode = "test"
+      }
+      this.clearInputs()
+    },
+    upload(){
+      /**
+       * 以下流程必須要在 validator 為 不為 "LACK" 或 "EXIST" 時才會執行
+       */
+      let r = this.validator()
+
+      if(r == "LACK"){
+        this.status = "資料有缺，請補上"
+        this.statusClass = "notOK"
+        this.resetStatus()
+      }else if(r == "EXIST"){
+        console.log(r);
+        this.status = `${this.inputs.name} 已經有了！`
+        this.statusClass = "notOK"
+        setTimeout(()=>{
+          this.clearInputs()
+        }, 1000)
+      }else{
+        let { 
+          name, 
+          gender,
+          type,
+          stem,
+          single,
+          plural 
+        } = this.inputs
+        let word, declension = {}
+        let nextIndex = this.words.length
+
+        word = { name, gender, type, stem }
+        declension = { name, single, plural }
+  
+        let wordRef = ref(db, "/words/" + nextIndex)
+        let declensionRef = ref(db, "/declensions/" + nextIndex)
+        console.log(word, declension);
+        set(wordRef, word)
+        set(declensionRef, declension).then(()=>{
+          this.status = "新增成功！"
+          this.statusClass = "OK"
+          this.clearInputs()
+          this.resetStatus()
+        }).catch( err =>{
+          console.log(err)
+        })
+        this.status = "新增中..."
+      }
+    },
+    initData(){
+      let tempR = [] 
+      /**
+       * 注意：在監聽執行 onValue 時，一開始的 tempR 宣告已不會執行到
+       */
+      onValue(wordRef, (snapshot)=>{
+        tempR = []                      /* 將閉包的 tempR 清空 */
+        let resultArr = snapshot.val()
+
+        resultArr.forEach((item) => {
+          tempR.push(item)
+        })
+
+      },{
+        // onlyOnce: true
+      })
+
+      onValue(declensionRef, (snapshot)=>{
+        let resultArr = snapshot.val()
+
+        resultArr.forEach((item, i) => {
+          tempR[i] = {...tempR[i], ...resultArr[i]}
+        })
+
+        this.words = tempR
+      },{
+        // onlyOnce: true
+      })
+    },
+    clearInputs(){
+      this.inputs = {
+        name: "",
+        gender: "",
+        type: "",
+        stem: "",
+        single: {},
+        plural: {}
+      }
+    },
+    random(){
+      this.clearInputs()
+      let w = this.words[ parseInt(Math.random()*this.words.length ) ]
+      let showWords = this.words.map( word => word.name + " " )
+      let counter = 0
+      // 防重複
+      if(w == this.lastWord){
+        let wordsTemp = [ ...this.words ]
+        let wIndex = wordsTemp.indexOf(w)
+        wordsTemp.splice(wIndex, 1)
+        w = wordsTemp[ parseInt(Math.random()*this.words.length ) ]
+      }
+
+      let timer = setInterval(() => {
+        this.randomInactive = true
+        this.inputs.name = showWords[ parseInt(Math.random()*showWords.length ) ]
+        counter++
+        if(counter == 10) {
+          this.randomInactive = false
+          clearInterval(timer)
+          this.inputs.name = w.name
+          this.lastWord = w
         }
-        ansTemp.singleInputs = [this.currentWord.single.NOM,this.currentWord.single.GEN,this.currentWord.single.DAT,this.currentWord.single.ACC,this.currentWord.single.ABL,this.currentWord.single.VOC,]
-        ansTemp.pluralInputs = [this.currentWord.plural.NOM,this.currentWord.plural.GEN,this.currentWord.plural.DAT,this.currentWord.plural.ACC,this.currentWord.plural.ABL,this.currentWord.plural.VOC,]
+      },30)
+    },
+    checkAnswer(c, sp){
+      /**
+       * 顯示為綠色的條件
+       * 1. 輸入不為空且要等於答案
+       * 顯示為紅色的條件
+       * 1. 已經有答案且...
+       */
+      let input = this.inputs[sp][c.eng]
+      let anwser = this.answerData && this.answerData[sp][c.eng]
+      if(input && input == anwser){
+        return true
+      }else if(input != null){
+        return false
+      }
+      return
+    },
+    enterPressed(evt){
+      if(evt.keyCode == 13 && this.mode == "upload"){
+        let r = confirm("確定要上傳嗎？")
+        if(r){
+          this.upload()
+        }else{
+          console.log("canceled");
+        }
+      }
+    },
+    resetStatus(){
+      let timer = setTimeout(()=>{
+        this.statusClass = null
+        this.status = "尚未輸入"
+        clearTimeout(timer)
+      }, 5000)
+    },
+    // showStatus(){
+    // /**
+    //  * 主要根據不同狀況來控制不同狀態下的 status 字樣與顏色
+    //  * 0. 初始狀況時顯示 "尚未輸入"，並且為灰色 done
+    //  * 1. 找到字（不管是打字輸入或者是隨機）時必顯示 "找到了！"，並且為綠色
+    //  * 2. 透過打字輸入時，沒找到字的話顯示 "正在輸入"，並且為灰色
+    //  * 3. 
+    //  */
+    // },
+    validator(){
+      /**
+       * inputs: {
+          name: "",
+          gender: "",
+          type: "",
+          stem: "",
+          single: {},
+          plural: {}
+        },
+       */
+      /**
+       * 1. 抓到哪些地方沒有填好有問題，並且在 Status 或者 alert 上提示哪些地方沒有填好
+       * 2. 檢查有無重複的字，而後將輸入欄清空
+       */
+      let es = Object.entries(this.inputs)
+      let list = [] /* 有問題的清單 */
+      let isExist = this.words.find( word => word.name == this.inputs.name )
+      // 驗證的底層邏輯
+      for(let e of es){
+        let key = e[0]
+        let value = e[1]
+        if(value == "") {
+          list.push(key)
+        }
+        // 如果是 single 和 plural 的話，檢查物件內的是否有空缺
+        if( key == "single" || key == "plural" ){
+          let declensionV = Object.entries(value) /* [ ["NOM", "？"], ["GEN", "？"], ... ] */
+          let caseResult = declensionV.map( r => r[0] ) /* 抽出有的 case */
+          let cases = [...this.cases]
+
+          // 抓出答案是 ""
+          let valueResult = declensionV.filter( r => r[1] == "" ) /* 抽出值為 "" */
+          valueResult.forEach( item => {
+            list.push(`${key} ${item[0]}`) // single NOM
+          } )
+
+          // 抓出沒有的 case
+          let r = cases.filter( c => {
+            return caseResult.indexOf(c) == -1
+          })
+          // 再推入問題清單
+          r.forEach( item => list.push(`${key} ${item}`) )
+        }
+      }
+
+      // 後續處理
+      if(list.length != 0){
+        alert(list.join("\n") + "\n\n有問題！")
+        return "LACK"
+      }else if(isExist){
+        alert(`${this.inputs.name} 已經有了！`)
+        return "EXIST"
+      }else{
+        /**
+         * 這邊沒問題就回傳 true 的結果給 upload
+         */
+        return true
+      }
+      return
+    }
+  },
+  computed: {
+    answerData(){
+      let ansTemp = {
+        single: {},
+        plural: {}
+      }
+      if(this.currentWord){
+        ansTemp.single = this.currentWord.single
+        ansTemp.plural = this.currentWord.plural
+
         return ansTemp
       }
       else return null
-    }
+    },
+    cases(){
+      let cases = []
+      this.caseList.forEach( c => cases.push(c.eng) )
+      return cases
+    },
   },
-  created: function(){
-    // Vue 物件生成時執行 ajax 取得字彙資料包並處理
-    const self = this;
-    $.ajax({
-    url: url,
-    success: function(evt){
-      let dataContainer = []
-      let rawData = evt.feed.entry
-      let dicUrl = "http://www.latin-dictionary.net/search/latin/"
-      rawData.forEach((item)=>{
-      let wordData = {
-          stem: item.gsx$詞幹.$t,
-          type: item.gsx$性別.$t,
-          declension: item.gsx$變格.$t,
-          single: {
-            NOM: item.gsx$nomsg.$t,
-            GEN: item.gsx$gensg.$t,
-            DAT: item.gsx$datsg.$t,
-            ACC: item.gsx$accsg.$t,
-            ABL: item.gsx$ablsg.$t,
-            VOC: item.gsx$vocsg.$t,
-          },
-          plural: {
-            NOM: item.gsx$nompl.$t,
-            GEN: item.gsx$genpl.$t,
-            DAT: item.gsx$datpl.$t,
-            ACC: item.gsx$accpl.$t,
-            ABL: item.gsx$ablpl.$t,
-            VOC: item.gsx$vocpl.$t,
-          },
-        }
-        dataContainer.push(wordData)
-      })
-      self.words = dataContainer
-      },
-    })
+  created(){
+    this.initData()
+    document.addEventListener("keyup", this.enterPressed)
   },
+  // mounted(){
+  //   console.log(this.words);
+  // }
 })
 
 
 
-$(".userInput > input").focus(()=>{
-  vm.inputIsSelected = true
-})
-$(".userInput > input").blur(()=>{
-  vm.status = "使用者未輸入..."
-  vm.inputIsSelected = false
-})
+
+app.mount("#app")
+

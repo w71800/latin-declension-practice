@@ -1,0 +1,119 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    title 變格練習器 prototype
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css')
+    link(rel='stylesheet', href='./style.css')
+    link(href='https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap', rel='stylesheet')
+  body
+    #app
+      .container
+        #mode_btns
+          .btn.mode_test(
+            @click="toggleMode('upload')"
+            :class="{is_highlight: mode == 'test'? true : false}"
+            ) 測驗模式
+          .btn.mode_upload(
+            @click="toggleMode('test')"
+            :class="{is_highlight: mode == 'upload'? true : false}"
+            ) 上傳模式
+        #mode_test(v-if="mode == 'test'? true : false")
+          .top
+            .userInput
+              .status(:class="{ answerFound: currentWord }") {{ status }}
+              input(
+                v-model='inputs.name'
+                placeholder='可以輸入 mora 或 homo 試試'
+                :class="{ answerFound: currentWord }"
+                )
+              button.random(
+                @click="random()"
+                :class="{ inactive: randomInactive }"
+                ) 隨機
+            .info
+              .show
+                button 性別
+                .text(v-if='currentWord') {{currentWord.gender}}
+              .show
+                button 變格
+                .text(v-if='currentWord') {{currentWord.type}}
+              .show
+                button 詞幹
+                .text(v-if='currentWord') {{currentWord.stem}}
+          hr
+          .bottom
+            .mainInput.left
+              .name Single
+              .row(v-for='(c, i) in caseList')
+                label {{c.cht}}
+                input(
+                  type='text' 
+                  v-model='inputs.single[c.eng]' 
+                  :key='i'
+                  :class=`{ 
+                    right: checkAnswer(c, 'single'), 
+                    wrong: checkAnswer(c, 'single') == false 
+                    }`
+                  )
+                .ansStatus
+                  i(
+                    class='fas fa-check' 
+                    v-if='checkAnswer(c, "single")'
+                    )
+            .mainInput.right
+              .name Plural
+              .row(v-for='(c, i) in caseList', :key='c.eng')
+                label {{c.cht}}
+                input(type='text' 
+                v-model='inputs.plural[c.eng]'
+                :class=`{ 
+                  right: checkAnswer(c, 'plural'),
+                  wrong: checkAnswer(c, 'plural') == false 
+                  }`
+                )
+                .ansStatus
+                  i(
+                    class='fas fa-check' 
+                    v-if='checkAnswer(c, "plural")'
+                    )
+        #mode_upload(v-if="mode == 'upload'? true : false")
+          .top
+            .userInput
+              .status(:class="statusClass") {{ status }}
+              input(v-model='inputs.name', placeholder='請輸入想上傳的詞彙' name="name")
+            .info
+              .show
+                button 性別
+                select(name="gender" v-model="inputs.gender") 
+                  option(value="" selected disabled) 選擇性別
+                  option(value="M") M
+                  option(value="F") F
+                  option(value="N") N
+              .show
+                button 變格
+                select(name="type" v-model="inputs.type") 
+                  option(value="" selected disabled) 選擇變格
+                  option(value="1st") 1st
+                  option(value="2nd") 2nd
+                  option(value="3rd") 3rd
+                  option(value="4th") 4th
+                  option(value="5th") 5th
+              .show
+                button 詞幹
+                input(placeholder="輸入詞幹" name="stem" v-model="inputs.stem")
+          hr
+          .bottom
+            .mainInput.left
+              .name Single
+              .row(v-for='(c, i) in caseList')
+                label {{c.cht}}
+                input(type='text', v-model='inputs.single[c.eng]', :key='i')
+            .mainInput.right
+              .name Plural
+              .row(v-for='(c, i) in caseList', :key='c.eng')
+                label {{c.cht}}
+                input(type='text', v-model='inputs.plural[c.eng]', :key='i')
+            .uploadHint 按下 ⏎ 上傳
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
+  script(type='module', src='./script.js')

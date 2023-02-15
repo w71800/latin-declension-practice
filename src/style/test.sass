@@ -1,0 +1,74 @@
+@import './_source'
+  
+#mode_test
+  .top
+    .userInput
+      // border: 1px solid #000
+      button.random
+        // display: block
+        border: 1px solid $color_green
+        background-color: $color_white
+        color: $color_green
+        font-size: 12px 
+        padding: 3px 9px
+        line-height: 20px 
+        border-radius: 4px
+        margin-left: 10px
+        cursor: pointer
+        vertical-align: middle
+        transition: .2s
+    .info
+      .text
+        display: inline-block 
+        width: 70px 
+        height: 20px 
+        color: #888 
+  .bottom
+    .ansStatus
+      border-radius: 50% 
+      width: 30px 
+      height: 30px 
+      margin-left: 25px 
+      i 
+        font-size: 23px 
+        &.fa-question 
+          color: #999 
+        &.fa-check 
+          color: green 
+        &.fa-times 
+          font-size: 26px 
+          color: red 
+
+////// functions //////
+#mode_test
+  .top
+    .userInput
+      .status
+        &.answerFound
+          color: $color_green
+      input
+        &:focus 
+          outline: none 
+          border: 2px solid $color_blue
+        &.answerFound
+          border: 2px solid $color_green
+      button.random
+        &:hover
+          border: 1px solid $color_green
+          background-color: $color_green
+          color: $color_white
+        &.inactive
+          border: 1px solid #999
+          cursor: default
+          background-color: #999
+          color: $color_white
+          pointer-events: none
+
+  .bottom
+    .mainInput
+      .row
+        input
+          &.right
+            border: 2px solid $color_green
+          &.wrong
+            border: 2px solid $color_red
