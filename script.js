@@ -28,7 +28,7 @@ const app = createApp({
       statusClass: null,
       statusUpload: "尚未輸入",
       inputIsSelected: false,
-      mode: "upload", 
+      mode: "test", 
       // 新版資料架構
       inputs: {
         name: "",
