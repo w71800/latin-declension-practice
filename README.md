@@ -8,8 +8,8 @@
 
 ### Ver2.0
 Published @ 2023.02.15
-0. 更新 Vue 至 Ver.3 opional API
-1. 串接了 Firebase 的 realtime DB
-2. 製作了可以上傳詞彙資料的 view
-3. 測驗模式中新增了「隨機出題」功能
-4. UI 和 UX 的調整
+1. 更新 Vue 至 Ver.3 opional API
+2. 串接了 Firebase 的 realtime DB
+3. 製作了可以上傳詞彙資料的 view
+4. 測驗模式中新增了「隨機出題」功能
+5. UI 和 UX 的調整
