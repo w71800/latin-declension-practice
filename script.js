@@ -1,5 +1,4 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
-import { url } from "./static/env.js"
 import db from'./configuration/firebase.js'
 import { ref, set, onValue, get, off } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
 
