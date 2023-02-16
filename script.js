@@ -1,6 +1,5 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
 import { url } from "./static/env.js"
-// import words from './static/words.js';
 import db from'./configuration/firebase.js'
 import { ref, set, onValue, get, off } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
 
@@ -10,7 +9,6 @@ const declensionRef = ref(db, 'declensions/')
 const app = createApp({
   data() {
     return {
-      // 格位名稱列表
       caseList: [
         {cht: "主格", eng: "NOM"},
         {cht: "屬格", eng: "GEN"},
@@ -19,17 +17,13 @@ const app = createApp({
         {cht: "奪格", eng: "ABL"},
         {cht: "呼格", eng: "VOC"}
       ],
-      // 從資料庫抓到的詞彙資料
-      words: [],
-      // 當下要測試的字
-      currentWord: null,
-      lastWord: null,
+      
+      words: [],          /* 從資料庫抓到的詞彙資料 */
+      currentWord: null,  /* 當下要測試的字 */
+      lastWord: null,     /* 上一個測試的字 */
       status: "尚未輸入",
       statusClass: null,
-      statusUpload: "尚未輸入",
-      inputIsSelected: false,
       mode: "test", 
-      // 新版資料架構
       inputs: {
         name: "",
         gender: "",
@@ -39,7 +33,7 @@ const app = createApp({
         plural: {}
       },
 
-      // 開發用資料
+      // 開發用
       // inputs: {
       //   name: "rex",
       //   gender: "M",
@@ -88,6 +82,9 @@ const app = createApp({
       this.clearInputs()
     },
     upload(){
+      // 開發用
+      // let r = true || this.validator()
+
       /**
        * 以下流程必須要在 validator 為 不為 "LACK" 或 "EXIST" 時才會執行
        */
@@ -235,15 +232,6 @@ const app = createApp({
         clearTimeout(timer)
       }, 5000)
     },
-    // showStatus(){
-    // /**
-    //  * 主要根據不同狀況來控制不同狀態下的 status 字樣與顏色
-    //  * 0. 初始狀況時顯示 "尚未輸入"，並且為灰色 done
-    //  * 1. 找到字（不管是打字輸入或者是隨機）時必顯示 "找到了！"，並且為綠色
-    //  * 2. 透過打字輸入時，沒找到字的話顯示 "正在輸入"，並且為灰色
-    //  * 3. 
-    //  */
-    // },
     validator(){
       /**
        * inputs: {
@@ -254,6 +242,7 @@ const app = createApp({
           single: {},
           plural: {}
         },
+      
        */
       /**
        * 1. 抓到哪些地方沒有填好有問題，並且在 Status 或者 alert 上提示哪些地方沒有填好
@@ -261,36 +250,40 @@ const app = createApp({
        */
       let es = Object.entries(this.inputs)
       let list = [] /* 有問題的清單 */
-      let isExist = this.words.find( word => word.name == this.inputs.name )
+      let isExist = this.words.find( word => word.name == this.inputs.name ) /* 重複的字的搜尋 */
+      
       // 驗證的底層邏輯
       for(let e of es){
         let key = e[0]
         let value = e[1]
+
+        // 抓到空缺的基本資料 key 值
         if(value == "") {
           list.push(key)
         }
-        // 如果是 single 和 plural 的話，檢查物件內的是否有空缺
-        if( key == "single" || key == "plural" ){
-          let declensionV = Object.entries(value) /* [ ["NOM", "？"], ["GEN", "？"], ... ] */
-          let caseResult = declensionV.map( r => r[0] ) /* 抽出有的 case */
-          let cases = [...this.cases]
 
-          // 抓出答案是 ""
-          let valueResult = declensionV.filter( r => r[1] == "" ) /* 抽出值為 "" */
+        // 如果是 single 和 plural 的話，檢查物件內 case 缺少哪些
+        if( key == "single" || key == "plural" ){
+          let declensionV = Object.entries(value)       /* ex. [ ["NOM", "？"], ["GEN", "？"], ... ] */
+          let caseResult = declensionV.map( r => r[0] ) /* 抽出目前有的 case */
+          let cases = [...this.cases]                   /* 完整的 case 清單以作比較 */
+
+          // 1. 抓出答案是 ""
+          let valueResult = declensionV.filter( r => r[1] == "" ) /* 抽出值為 "" 的 case */
           valueResult.forEach( item => {
-            list.push(`${key} ${item[0]}`) // single NOM
+            list.push(`${key} ${item[0]}`)                       /* ex. single NOM */
           } )
 
-          // 抓出沒有的 case
+          // 2. 比對完整清單，抓出缺少的 case
           let r = cases.filter( c => {
             return caseResult.indexOf(c) == -1
           })
           // 再推入問題清單
-          r.forEach( item => list.push(`${key} ${item}`) )
+          r.forEach( item => list.push(`${key} ${item}`) )      /* ex. plural DAT */
         }
       }
 
-      // 後續處理
+      // 後續回傳處理及提示
       if(list.length != 0){
         alert(list.join("\n") + "\n\n有問題！")
         return "LACK"
@@ -298,12 +291,8 @@ const app = createApp({
         alert(`${this.inputs.name} 已經有了！`)
         return "EXIST"
       }else{
-        /**
-         * 這邊沒問題就回傳 true 的結果給 upload
-         */
-        return true
+        return true     /* 這邊沒問題就回傳 true 的結果給 upload() */
       }
-      return
     }
   },
   computed: {
