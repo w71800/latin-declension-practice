@@ -15,13 +15,13 @@ Published @ 2023.02.15
 5. UI 和 UX 的調整與優化
 
 ### 功能展示
-1. 隨時匹配功能與提示
-![](https://imgur.com/a/uvKDfd9.gif)
-2. 隨機挑選詞彙功能
+1. 隨時匹配功能與提示  
+![](https://imgur.com/iaqy8fh.gif)
+2. 隨機挑選詞彙功能  
 ![](https://imgur.com/In9QK4f.gif)
-3. 即時作答比對
+3. 即時作答比對  
 ![](https://imgur.com/CJguDwQ.gif) 
-4. 可以切換不同功能（測驗模式 ⇆ 上傳模式）
+4. 可以切換不同功能（測驗模式 ⇆ 上傳模式）  
 ![](https://imgur.com/H4uQb14.gif)
-5. 上傳模式
+5. 上傳模式  
 ![](https://imgur.com/aF7CDzB.gif)
