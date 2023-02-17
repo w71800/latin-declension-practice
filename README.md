@@ -13,3 +13,15 @@ Published @ 2023.02.15
 3. 製作了可以上傳詞彙資料的 view（上傳模式）
 4. 測驗模式中新增了隨機出題功能
 5. UI 和 UX 的調整與優化
+
+### 功能展示
+1. 隨時匹配功能與提示
+![](https://imgur.com/a/uvKDfd9)
+2. 隨機挑選詞彙功能
+![](https://imgur.com/In9QK4f)
+3. 即時作答比對
+![](https://imgur.com/CJguDwQ) 
+4. 可以切換不同功能（測驗模式 ⇆ 上傳模式）
+![](https://imgur.com/H4uQb14)
+5. 上傳模式
+![](https://imgur.com/aF7CDzB)
